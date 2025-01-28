@@ -8,6 +8,7 @@ import { useState } from 'react'
 import {BsChevronCompactLeft} from 'react-icons/bs'
 import {BsChevronCompactRight} from 'react-icons/bs'
 import Footer from './components/layout/Footer'
+import { motion } from 'motion/react'
 
 const Commentar = () => {
   
@@ -39,7 +40,11 @@ const Commentar = () => {
   ]
   return(
     <>
-          <section className='my-[10rem] px-6 py-8 w-full bg-slate-200 relative lg:flex flex-col justify-center items-center'>
+          <motion.section 
+          className='my-[10rem] px-6 py-8 w-full bg-slate-200 relative lg:flex flex-col justify-center items-center'
+          initial={{opacity: 0}}
+          whileInView={{opacity: 1, transition: {duration: 0.8, ease: ["easeInOut"]}}}
+          >
             <h2 className='mb-8 text-center text-xl font-semibold'>Ini Kata Mereka:</h2>
             <div className='lg:w-[40%] w-full border border-slate-300 min-h-[20rem] rounded-xl shadow-xl px-10 py-4 flex flex-col justify-around'>
               <p>{dataComentar[slide].name}</p>
@@ -55,7 +60,7 @@ const Commentar = () => {
               </div>
             </div>
           
-    </section>
+    </motion.section>
     </>
   )
 }
@@ -87,17 +92,25 @@ const App = () => {
   ]
   return (
     <>
-    <div className='max-w-screen min-h-screen relative '>
+    <div className='max-w-screen min-h-screen relative overflow-x-hidden'>
       <Navbar />
       <main className='mt-[1rem] mb-[20rem]'>
-        <section className='px-[2rem] md:px-[4rem]'>
+        <motion.section 
+        className='px-[2rem] md:px-[4rem]'
+        initial={{opacity: 0}}
+        whileInView={{opacity: 1, transition: {duration: 0.5,ease: ["easeInOut"]}}}
+        >
           <div className='overflow-hidden rounded-md shadow-md shadow-slate-500 w-full md:h-[25rem] h-[20rem]'>
             {/* image only for example */}
             <div style={{backgroundImage: `url(${imageBeranda})`}} className='bg-cover bg-center w-full h-full'>
             </div>
           </div>
-        </section>
-        <section className='px-[2rem] mt-[4rem] md:px-[4rem]'>
+        </motion.section>
+        <motion.section 
+        className='px-[2rem] mt-[4rem] md:px-[4rem]'
+        initial={{opacity: 0}}
+        whileInView={{opacity: 1, transition: {duration: 1, delay: 0.8 ,ease: ["easeInOut"]}}}
+        >
           <div className='w-full my-[7rem] lg:px-10 px-5 min-h-[25rem]'>
             <div className='text-center mb-[10rem] border border-slate-200 p-16 rounded-md shadow-md'>
               <h1 className='text-2xl'>وَمَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</h1>
@@ -105,9 +118,12 @@ const App = () => {
               <p className='mt-4'>(H.R Muslim)</p>
             </div>
           </div>
-        </section>
+        </motion.section>
         <section className='w-full'>
-          <div>
+          <motion.div
+          initial={{translateX: '-20rem'}}
+          whileInView={{translateX: '0', transition: {duration: 0.5, ease: ["easeInOut"]}}}
+          >
             <div className='w-[70%] md:w-[40%] bg-[#44852f] px-4 py-3 rounded-r-md shadow-md shadow-slate-400'>
               <p className='text-krem font-semibold text-lg leading-5'>Pendidikan berbasis tradisional dan praktek</p>
             </div>
@@ -118,8 +134,12 @@ const App = () => {
               <p className='mt-2 text-krem'>3. Berbasis sallafy</p>
               <p className='mt-2 text-krem'>4. Kegiatan berdialog dan berpikir</p>
             </div>
-          </div>
-          <div className='mt-[4rem] flex flex-col items-end'>
+          </motion.div>
+          <motion.div 
+          className='mt-[4rem] flex flex-col items-end'
+          initial={{translateX: '20rem'}}
+          whileInView={{translateX: '0', transition: {duration: 0.5, ease: ["easeInOut"]}}}
+          >
               <div className='w-[70%] text-center bg-[#ffe47a] px-4 py-3 rounded-l-md shadow-md shadow-slate-400'>
                 <p className='text-lg text-dark-green font-semibold'>Kenapa Memilih Kami?</p>
               </div>
@@ -129,7 +149,7 @@ const App = () => {
                 <p className='mt-2 text-[#396f27] leading-5'>3. Pelajaran Al-Quran dan Kitab Kuning Yang Mendalam</p>
                 <p className='mt-2 text-[#396f27] leading-5'>4. Fasilitas nyaman dan asri</p>
               </div>
-          </div>
+          </motion.div>
         </section>
         <section className='mt-[8rem]'>
            <Commentar />

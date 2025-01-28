@@ -23,7 +23,7 @@ const Navbar = () => {
 ]
   return (
     <header>
-          {/* navbar md && < */}
+          {/* navbar md && > md */}
           <div className='min-h-[4rem] bg-krem flex flex-col items-center py-5 w-screen md:min-h-[2rem] md:flex-row md:px-[4rem]'>
             <img src={logo} alt="" width={45} className='mb-4 md:mb-0 md:mr-3'/>
             <div className='text-center md:text-start'>
