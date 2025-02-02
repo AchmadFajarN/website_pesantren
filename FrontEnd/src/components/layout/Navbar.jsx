@@ -43,7 +43,7 @@ const Navbar = () => {
           {/* navbar md && < end */}
           
           {/* navbar small device */}
-          <div className='fixed w-full bottom-0 md:hidden'>
+          <div className='fixed w-full bottom-0 md:hidden z-40'>
             <Navigation />
           </div>
           {/* navbar small device end */}
