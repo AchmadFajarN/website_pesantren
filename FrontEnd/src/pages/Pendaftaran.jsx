@@ -6,22 +6,24 @@ import { useState } from 'react'
 
 const Pendaftaran = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    nama_lengkap: '',
     nik: '',
     tempat_lahir: '',
+    tanggal_lahir: '',
     alamat: '',
     provinsi: '',
-    kab_kota: '',
+    kota_kabupaten: '',
+    jenis_kelamin: '',
     kode_pos: '',
-    no_telp: '',
+    no_hp: '',
     email: '',
     asal_sekolah: '',
+    tahun_lulus: ''
 
   })
   const [errors, setErrors] = useState({})
-  const onHandleSubmit = (e) => {
+  const onHandleSubmit = async (e) => {
     e.preventDefault()
-    
     // Validasi akhir sebelum submit
     let submitErrors = {}
     Object.keys(formData).forEach(key => {
@@ -32,8 +34,29 @@ const Pendaftaran = () => {
     setErrors(submitErrors)
     
     if (Object.keys(submitErrors).length === 0) {
-      // Lakukan submit form di sini
-      console.log('Form submitted:', formData)
+      // submit form
+      const objData = {...formData}
+      console.log(objData)
+      try {
+        // POST data ke API endpoint
+        const response = await fetch('/api/students', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(objData)
+        })
+  
+        // Menangani response dari server
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const result = await response.json()
+        console.log('Response from API:', result)
+      } catch (error) {
+        console.error('Error posting data:', error)
+        alert("Error anjir", error)
+      }
     }
 
   }
@@ -58,7 +81,7 @@ const Pendaftaran = () => {
         break
     }
     return ''
-  }
+  }  
   const handledChange = (e) => {
     const {name, value} = e.target
     setFormData(prevState => ({
@@ -70,7 +93,6 @@ const Pendaftaran = () => {
       ...prev,
       [name]: error
     }))
-    console.log(formData)
   }
   return (
     <div className='max-w-screen-md md:max-w-screen-xl overflow-x-hidden'>
@@ -82,7 +104,7 @@ const Pendaftaran = () => {
               {/* name */}
               <div className='px-8 pt-4'>
                 <label htmlFor="nama" className='text-dark-green text-sm left-4 group-focus:hidden'>Nama Lengkap</label>
-                <input onChange={handledChange} value={formData.name} placeholder='Nama Lengkap' type="text" name='name' required id='nama' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
+                <input onChange={handledChange} value={formData.nama_lengkap} placeholder='Nama Lengkap' type="text" name='nama_lengkap' required id='nama' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
               </div>
               {/* nik */}
               <div className='px-8 pt-4'>
@@ -102,22 +124,22 @@ const Pendaftaran = () => {
               {/* tempat lahir */}
               <div className='px-8 pt-4'>
                 <label htmlFor="ttl" className='text-dark-green text-sm left-4 group-focus:hidden'>Tempat Lahir</label>
-                <input onChange={handledChange} value={formData.tempatLahir} placeholder='Tempat Lahir' name='tempat_lahir' type="text" required id='ttl' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
+                <input onChange={handledChange} value={formData.tempat_lahir} placeholder='Tempat Lahir' name='tempat_lahir' type="text" required id='ttl' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
               </div>
               {/* tanggal lahir */}
               <div className='px-8 pt-4'>
                 <label htmlFor="tl" className='text-dark-green text-sm left-4 group-focus:hidden'>Tanggal Lahir</label>
-                <input onChange={handledChange} placeholder='Tanggal Lahir' name='ttl' type="date" required id='ttl' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
+                <input onChange={handledChange} placeholder='Tanggal Lahir' name='tanggal_lahir' type="date" required id='tl' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
               </div>
               {/* jenis kelamin */}
               <div className='px-8 pt-4'>
                 <p className='block text-sm text-dark-green mb-2'>Jenis Kelamin</p>
                 <label htmlFor="" className='text-sm text-dark-green mr-4'>
-                  <input type="radio" name='gender' value={"L"}  />
+                  <input type="radio" checked={formData.jenis_kelamin === 'L'} onChange={handledChange} name='jenis_kelamin' value={"L"}  />
                   Laki Laki
                 </label>
                 <label htmlFor="" className='text-sm text-dark-green'>
-                  <input type="radio" name='gender' value={"P"}  />
+                  <input type="radio" checked={formData.jenis_kelamin === 'P'} onChange={handledChange} name='jenis_kelamin' value={"P"}  />
                   Perempuan
                 </label>
               </div>
@@ -134,7 +156,7 @@ const Pendaftaran = () => {
               {/* kab/kota */}
               <div className='px-8 pt-4'>
                 <label htmlFor="kab-kota" className='text-dark-green text-sm'>Kab/Kota</label>
-                <input onChange={handledChange} value={formData.kab_kota} placeholder='KAB/KOTA' name='kab_kota' type="text" required id='kab-kota' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
+                <input onChange={handledChange} value={formData.kota_kabupaten} placeholder='KAB/KOTA' name='kota_kabupaten' type="text" required id='kab-kota' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
               </div>
               {/* kode pos */}
               <div className='px-8 pt-4'>
@@ -146,12 +168,12 @@ const Pendaftaran = () => {
               <label htmlFor="telp" className='text-dark-green text-sm'>No telp</label>
               <input 
                 onChange={handledChange} 
-                value={formData.no_telp} 
+                value={formData.no_hp} 
                 placeholder='Nomor telepon' 
                 type="tel" 
                 required 
                 id='telp' 
-                name='no_telp' 
+                name='no_hp' 
                 className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'
               />
               {errors.no_telp && <p className="text-red-500 text-sm mt-1">{errors.no_telp}</p>}
@@ -179,7 +201,7 @@ const Pendaftaran = () => {
               {/* tahun lulus */}
               <div className='px-8 pt-4'>
                 <label htmlFor="tahunLulus" className='text-dark-green text-sm'>Tahun Lulus</label>
-                <input value={formData.tahun_lulus} placeholder='Tahun Lulus' name='tahun_lulus' type="date" required id='kodePos' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
+                <input onChange={handledChange} value={formData.tahun_lulus} placeholder='Tahun Lulus' name='tahun_lulus' type="number" required id='tahun_lulus' className='w-full px-4 py-2 focus:border-blue-500 focus:border-2 outline-none'/>
               </div>
               <div className='px-8 pt-4 mt-2'>
                 <button type='submit' className='hover:bg-transparent hover:text-dark-green transition-all hover:border hover:border-dark-green ease-in-out w-full py-2 bg-dark-green text-krem font-semibold'>Kirim</button>
