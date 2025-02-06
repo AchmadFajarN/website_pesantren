@@ -4,9 +4,9 @@ pindah direktori ke FronEnd folder secara manual atau dengan mengetik di termina
 cd FrontEnd
 ```
 pastikan terminal anda berada di path yang tepat, contoh:
-```
+`
 C:user/user/web_pesantren/FrontEnd
-```
+`
 Lalu install module dengan ketik ini di terminal:
 ``` bash 
 npm i
