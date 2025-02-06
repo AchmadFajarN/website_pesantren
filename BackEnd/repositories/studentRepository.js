@@ -56,25 +56,23 @@ class StudentRepository {
   async update(nomor, studentData) {
     const query = `
       UPDATE students SET
-        nomor_pendaftaran = $1,
-        nama_lengkap = $2,
-        tempat_lahir = $3,
-        tanggal_lahir = $4,
-        jenis_kelamin = $5,
-        alamat = $6,
-        provinsi = $7,
-        kota_kabupaten = $8,
-        kode_pos = $9,
-        no_hp = $10,
-        email = $11,
-        asal_sekolah = $12,
-        tahun_lulus = $13,
-      WHERE nomor_pendaftaran = $14
+        nama_lengkap = $1,
+        tempat_lahir = $2,
+        tanggal_lahir = $3,
+        jenis_kelamin = $4,
+        alamat = $5,
+        provinsi = $6,
+        kota_kabupaten = $7,
+        kode_pos = $8,
+        no_hp = $9,
+        email = $10,
+        asal_sekolah = $11,
+        tahun_lulus = $12
+      WHERE nomor_pendaftaran = $13
       RETURNING *
     `;
     
     const values = [
-      studentData.nomor_pendaftaran,
       studentData.nama_lengkap,
       studentData.tempat_lahir,
       studentData.tanggal_lahir,

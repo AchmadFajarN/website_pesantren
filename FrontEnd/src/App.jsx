@@ -160,7 +160,7 @@ const App = () => {
             {
               artikel.map((a) => {
                 return(
-                  <motion.div initial={{y:10, opacity: 0}} whileInView={{y:0, opacity: 1}} transition={{duration: 1}} key={a.date} className='border border-slate-400 shadow-md shadow-slate-400 h-[25rem] rounded-xl overflow-hidden mb-10'>
+                  <motion.div initial={{y:10, opacity: 0}} whileInView={{y:0, opacity: 1}} transition={{duration: 1}} key={a.date} className=' border-slate-400 shadow-md shadow-slate-400 h-[25rem] rounded-xl overflow-hidden mb-10'>
                   <div className='w-full h-[50%] bg-cover bg-center' style={{backgroundImage: `url(${a.image})`}}></div>
                   <div className='w-full px-4 py-8'>
                     <p className='text-slate-800 font-semibold text-xl'>{ a.title }</p>
