@@ -5,11 +5,7 @@ class StudentService {
   async createStudent(studentData) {
     const { error } = validateStudent(studentData);
     if (error) throw new Error(error.details.map(d => d.message).join(', '));
-    
-    // Check unique constraints
-    const existingNomor = await studentRepository.findByNomorPendaftaran(studentData.nomor_pendaftaran);
-    if (existingNomor) throw new Error('Nomor pendaftaran sudah terdaftar');
-    
+
     const existingNIK = await studentRepository.findByNIK(studentData.nik);
     if (existingNIK) throw new Error('NIK sudah terdaftar');
     
@@ -29,13 +25,28 @@ class StudentService {
     return student;
   }
 
-  async updateStudent(nomor, studentData) {
+  async updateStudent(nomorPendaftaran, studentData) {
     const { error } = validateStudent(studentData);
     if (error) throw new Error(error.details.map(d => d.message).join(', '));
-    
-    const student = await studentRepository.update(nomor, studentData);
-    if (!student) throw new Error('Siswa tidak ditemukan');
-    return student;
+
+    const existingStudent = await studentRepository.findByNomorPendaftaran(nomorPendaftaran);
+    if (!existingStudent) {
+      throw new Error('Siswa tidak ditemukan');
+    }
+
+    if (studentData.email && studentData.email !== existingStudent.email) {
+      const emailExists = await studentRepository.findByEmail(studentData.email);
+      if (emailExists) {
+        throw new Error('Email sudah terdaftar');
+      }
+    }
+
+    const updatedData = {
+      ...studentData,
+      email: studentData.email || existingStudent.email,
+    };
+
+    return studentRepository.update(nomorPendaftaran, updatedData);
   }
 
   async deleteStudent(nomor) {
