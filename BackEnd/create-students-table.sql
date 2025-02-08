@@ -1,7 +1,12 @@
-CREATE TYPE GENDER AS ENUM ('L', 'P');
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE registration_sequence (
+  year INT PRIMARY KEY,
+  last_sequence INT NOT NULL DEFAULT 0
+);
 
 CREATE TABLE students (
-  id_pendaftaran SERIAL PRIMARY KEY,
+  id_pendaftaran UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   nomor_pendaftaran VARCHAR(20) UNIQUE NOT NULL,
   nama_lengkap VARCHAR(100) NOT NULL,
   nik CHAR(16) UNIQUE NOT NULL,

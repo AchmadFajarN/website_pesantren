@@ -2,7 +2,6 @@ const Joi = require('joi');
 const currentYear = new Date().getFullYear();
 
 const studentSchema = Joi.object({
-  nomor_pendaftaran: Joi.string().max(20),
   nama_lengkap: Joi.string().max(100).required(),
   nik: Joi.string().length(16).pattern(/^[0-9]+$/).required(),
   tempat_lahir: Joi.string().max(50).required(),
