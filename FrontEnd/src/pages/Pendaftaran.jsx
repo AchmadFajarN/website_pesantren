@@ -96,9 +96,9 @@ const Pendaftaran = () => {
     }))
   }
   return (
-    <div className='max-w-screen-md md:max-w-screen-xl overflow-x-hidden'>
+    <div className='w-screen overflow-x-hidden'>
       <Navbar />
-      <main className='h-full min-h-screen px-4 mb-10'>
+      <main className='h-full min-h-screen md:px-[4rem] px-4 mb-10'>
         <RegisInfo />
         <div id='form' className='flex flex-col justify-center items-center'>
           <h1 className='text-center mt-4 text-dark-green font-bold text-2xl'>Pendaftaran</h1>
