@@ -1,7 +1,34 @@
+const { v4: uuidv4 } = require('uuid');
 const pool = require('../config/db');
 
 class StudentRepository {
+  async generateRegistrationNumber() {
+    const year = new Date().getFullYear();
+    const client = await pool.connect();
+    
+    try {
+      await client.query('BEGIN');
+      
+      const { rows } = await client.query(
+        `INSERT INTO registration_sequence (year) VALUES ($1)
+         ON CONFLICT (year) DO UPDATE SET last_sequence = registration_sequence.last_sequence + 1
+         RETURNING last_sequence`,
+        [year]
+      );
+
+      const sequence = rows[0].last_sequence;
+      const formattedSequence = sequence.toString().padStart(4, '0');
+      
+      return `YNH-${year}-${formattedSequence}`;
+    } finally {
+      await client.query('COMMIT');
+      client.release();
+    }
+  }
+
   async create(studentData) {
+    const nomorPendaftaran = await this.generateRegistrationNumber();
+    
     const query = `
       INSERT INTO students (
         nomor_pendaftaran, nama_lengkap, nik, tempat_lahir, 
@@ -11,9 +38,9 @@ class StudentRepository {
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING *
     `;
-    
+
     const values = [
-      studentData.nomor_pendaftaran,
+      nomorPendaftaran,
       studentData.nama_lengkap,
       studentData.nik,
       studentData.tempat_lahir,
