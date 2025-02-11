@@ -41,20 +41,20 @@ const Commentar = () => {
   return(
     <>
           <motion.section 
-          className='my-[10rem] px-6 py-8 w-full bg-slate-200 relative lg:flex flex-col justify-center items-center'
+          className='my-[10rem] px-6 py-8 w-full bg-slate-300 relative lg:flex flex-col justify-center items-center'
           initial={{opacity: 0}}
           whileInView={{opacity: 1, transition: {duration: 0.8, ease: ["easeInOut"]}}}
           >
-            <h2 className='mb-8 text-center text-xl font-semibold'>Ini Kata Mereka:</h2>
-            <div className='lg:w-[40%] w-full border border-slate-300 min-h-[20rem] rounded-xl shadow-xl px-10 py-4 flex flex-col justify-around'>
-              <p>{dataComentar[slide].name}</p>
-              <p className='text-lg font-semibold italic'>&quot;{dataComentar[slide].commentar}&quot;</p>
-              <p>{dataComentar[slide].date}</p>
+            <h2 className='mb-8 text-center md:text-xl font-semibold'>Ini Kata Mereka:</h2>
+            <div className='lg:w-[40%] w-full bg-slate-200 min-h-[20rem] rounded-xl shadow-xl px-10 py-4 flex flex-col justify-around'>
+              <p className='text-sm font-semibold text-slate-800'>{dataComentar[slide].name}</p>
+              <p className='md:text-lg font-semibold italic text-slate-800'>&quot;{dataComentar[slide].commentar}&quot;</p>
+              <p className='text-xs md:text-sm'>{dataComentar[slide].date}</p>
               <div className='absolute w-full h-full left-0 flex justify-between items-center'>
-                <div onClick={prevSLide} className='cursor-pointer p-4 bg-black/50 active:bg-black/70 transition-colors duration-200 ease-in-out text-white rounded-xl'>
+                <div onClick={prevSLide} className='cursor-pointer p-4 bg-black/20 active:bg-black/70 transition-colors duration-200 ease-in-out text-white rounded-xl'>
                   <BsChevronCompactLeft size={20} />
                 </div>
-                <div onClick={nextSlide} className='cursor-pointer p-4 bg-black/50 active:bg-black/70 transition-colors duration-200 ease-in-out text-white rounded-xl'>
+                <div onClick={nextSlide} className='cursor-pointer p-4 bg-black/20 active:bg-black/70 transition-colors duration-200 ease-in-out text-white rounded-xl'>
                   <BsChevronCompactRight size={20} />
                 </div>
               </div>
@@ -112,9 +112,9 @@ const App = () => {
         whileInView={{opacity: 1, transition: {duration: 1, delay: 0.8 ,ease: ["easeInOut"]}}}
         >
           <div className='w-full my-[7rem] lg:px-10 px-5 min-h-[25rem]'>
-            <div className='text-center mb-[10rem] border border-slate-200 p-16 rounded-md shadow-md'>
-              <h1 className='text-2xl'>وَمَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</h1>
-              <p className='mt-4'><i>Artinya: “Barang siapa yang menempuh jalan untuk mencari ilmu, maka Allah akan mudahkan baginya jalan menuju surga.”.</i></p>
+            <div className='text-center mb-[10rem] p-16 rounded-md shadow-xl bg-slate-200 border'>
+              <h1 className='text-lg'>وَمَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</h1>
+              <p className='mt-4 text-sm'><i>Artinya: “Barang siapa yang menempuh jalan untuk mencari ilmu, maka Allah akan mudahkan baginya jalan menuju surga.”.</i></p>
               <p className='mt-4'>(H.R Muslim)</p>
             </div>
           </div>

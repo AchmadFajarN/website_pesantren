@@ -6,48 +6,92 @@ import { motion } from 'motion/react';
 const RegisInfo = () => {
     const [dropdownOnlineActive, setDropdownOnlineActive] = useState(false)
     const [dropdownOfflineActive, setDropdownOfflineActive] = useState(false)
-    const handleDropdownOnline = () => {
-        setDropdownOnlineActive(!dropdownOnlineActive)
-    }
-    const handleDropdownOffline = () => {
-        setDropdownOfflineActive(!dropdownOfflineActive)
-    }
+    const [step, setStep] = useState(true)
+
+    const stepHandler = () => setStep(!step)
+
+    const dataOffline = [
+        {
+            no: 2,
+            data: 'Datang ke Sekolah – Kunjungi sekolah sesuai jadwal.'
+        },
+        {
+            no: 3,
+            data: 'Mengisi Formulir – Isi formulir pendaftaran dengan data yang benar dan lengkap.'
+        },
+        {
+            no: 4,
+            data: 'Penyerahan Dokumen – Serahkan formulir dan dokumen ke panitia pendaftaran.'
+        },
+        {
+            no: 5,
+            data: 'Pengumuman Hasil – Anda akan di beritahu oleh pihak pesantren'
+        }
+    ] 
+    const dataOnline = [
+        {
+            no: 2,
+            data: 'Setelah itu anda akan dihubungi pihak pesantren'
+        },
+        {
+            no: 3,
+            data: 'Persiapkan dokumen yang diperlukan'
+        },
+        {
+            no: 4,
+            data: 'Pengumuman hasil - Anda akan diberitahu oleh pihak pesantren'
+        }
+    ]
   return (
     <>
     <h1 className='text-2xl font-bold text-dark-green mt-4'>Langkah-langkah Pendaftaran:</h1>
-    <div className='mb-[10rem] mt-8'>
-            <div className="w-full flex flex-col md:flex-row md:gap-14 gap-8 justify-center md:items-start">
-                <div className='md:flex-1 rounded-md shadow-xl bg-slate-200 px-4 py-4 md:px-8 flex flex-col justify-center items-center md:items-start'>
-                    <div className='mb-4 bg-slate-300 rounded-sm shadow-md w-full px-2 py-2'>
-                        <h2 className='text-xl font-bold text-dark-green'>Pendaftaran Online</h2>
-                        <p onClick={handleDropdownOffline} className='text-sm mt-2 text-yellow-700 inline-flex items-center cursor-pointer'>Lihat Selengkapnya <MdArrowDropDown /></p>
-                    </div>
-                    {dropdownOfflineActive? <motion.div initial={{opacity: 0}} animate={{opacity: 1,transition: {duration: 0.5}}} className='w-full px-2 py-2 bg-slate-300 rounded-sm shadow-md'>
-                        <ul className='text-dark-green font-semibold text-sm'>
-                            <li>1. Isi form data dengan klik link ini <a  className='text-blue-500' href="#form">form pendaftaran</a></li>
-                            <li>2. Setelah itu anda akan dihubungi pihak pesantren</li>
-                            <li>3. Persiapkan dokumen yang diperlukan</li>
-                            <li>4. Pengumuman hasil - Anda akan diberitahu oleh pihak pesantren</li>
-                        </ul>
-                    </motion.div> : ''}
-                </div>
-                <div className='md:flex-1 rounded-md shadow-xl bg-slate-200 px-4 py-4 md:px-8'>
-                    <div className='mb-4 bg-slate-300 rounded-sm shadow-md w-full px-2 py-2'>
-                        <h2 className='text-xl font-bold text-dark-green'>Pendaftaran Offline</h2>
-                        <p onClick={handleDropdownOnline} className='text-sm mt-2 text-yellow-700 inline-flex items-center cursor-pointer'>Lihat Selengkapnya <MdArrowDropDown /></p>
-                    </div>
-                    {dropdownOnlineActive? <motion.div initial={{opacity: 0}} animate={{opacity: 1,transition: {duration: 0.5}}} className='px-2 py-2 bg-slate-300 rounded-sm shadow-md'>
-                        <ul className='text-dark-green font-semibold text-sm'>
-                            <li>1. Persiapan Dokumen – Siapkan dokumen seperti KK, Akta Kelahiran, KTP orang tua, ijazah, pas foto, dan dokumen lain yang diminta.</li>
-                            <li>2. Datang ke Sekolah – Kunjungi sekolah sesuai jadwal.</li>
-                            <li>3. Mengisi Formulir – Isi formulir pendaftaran dengan data yang benar dan lengkap.</li>
-                            <li>4. Penyerahan Dokumen – Serahkan formulir dan dokumen ke panitia pendaftaran.</li>
-                            <li>5. Pengumuman Hasil – Anda akan di beritahu oleh pihak pesantren</li>
-
-                        </ul>
-                    </motion.div> : ''}
+    <motion.div initial={{opacity: 0}} whileInView={{opacity: 1, transition: {duration: 1}}} className='my-8 flex'>
+        <button onClick={stepHandler} className={`px-2 py-3 ${step? 'border-4 border-dark-green': ''} rounded-l-xl bg-slate-200 shadow-xl text-sm text-dark-green`}>Offline</button>
+        <button onClick={stepHandler} className={`px-2 py-3 ${step? '': 'border-4 border-krem'} rounded-r-xl bg-slate-200 shadow-xl text-sm text-dark-green`}>Online</button>
+    </motion.div>
+    <h2 className='text-xl my-8 font-semibold text-dark-green mb-8'>Pendaftaran {step? 'Offline' : 'Online'}</h2>
+    <div className='mb-[10rem] mt-8 py-6'>
+        <motion.div initial={{opacity: 0}} whileInView={{opacity: 1, transition: {duration: 0.5, ease: ['easeInOut']}}} className='flex justify-evenly items-center pt-6 relative'>
+            <div className='size-28 bg-slate-200 rounded-full flex justify-center items-center shadow-xl p-1 '>
+                <div className='border w-full h-full bg-slate-300 rounded-full flex justify-center items-center'>
+                    <p className='text-2xl text-dark-green'>1</p>
                 </div>
             </div>
+            <motion.div initial={{opacity: 0, translateX: 40}} whileInView={{opacity: 1, translateX: 0, animationDelay: 1, transition: {duration: 1}}} className='flex-1 px-4'>
+                <p className='text-xs md:text-base font-semibold text-dark-green'>{step? 'Persiapan Dokumen – Siapkan dokumen seperti KK, Akta Kelahiran, KTP orang tua, ijazah, pas foto, dan dokumen lain yang diminta.': <>Isi form data dengan klik link ini <a className='text-blue-500' href="#form">Form pendaftaran</a></>}</p>
+            </motion.div>
+        </motion.div>
+        {step?
+            dataOffline.map((step, no) => {
+                return(
+            <motion.div initial={{opacity: 0, translateY: 40}} whileInView={{opacity: 0.8, translateY: 0, transition: {duration: 0.5, ease: ['easeInOut']}}} className='flex justify-evenly items-center pt-24 md:pt-[8rem] step-box relative'>
+                <motion.div className='flex-2 size-28 bg-slate-200 rounded-full flex justify-center items-center shadow-xl p-1 '>
+                    <div className='border w-full h-full bg-slate-300 rounded-full flex justify-center items-center'>
+                        <p className='text-2xl text-dark-green'>{step.no}</p>
+                    </div>
+                </motion.div>
+                <motion.div initial={{opacity: 0, translateX: 40}} whileInView={{opacity: 1, translateX: 0, animationDelay: 1, transition: {duration: 1}}} className='flex-1 px-4'>
+                    <p className='text-xs md:text-base font-semibold text-dark-green'>{ step.data }</p>
+                </motion.div>
+            </motion.div>
+                )
+            })
+            :
+            dataOnline.map((step, no) => {
+                return(
+                <motion.div initial={{opacity: 0, translateY: 40}} whileInView={{opacity: 0.8, translateY: 0, transition: {duration: 0.5, ease: ['easeInOut']}}} className='flex justify-evenly items-center pt-24 md:pt-[8rem] step-box relative'>
+                    <motion.div className='flex-2 size-28 bg-slate-200 rounded-full flex justify-center items-center shadow-xl p-1 '>
+                        <div className='border w-full h-full bg-slate-300 rounded-full flex justify-center items-center'>
+                            <p className='text-2xl text-dark-green'>{step.no}</p>
+                        </div>
+                </motion.div>
+                <motion.div initial={{opacity: 0, translateX: 40}} whileInView={{opacity: 1, translateX: 0, animationDelay: 1, transition: {duration: 1}}} className='flex-1 px-4'>
+                    <p className='text-xs md:text-base font-semibold text-dark-green'>{ step.data }</p>
+                </motion.div>
+                </motion.div>  
+                )
+            })
+        }
     </div>
     </>
   )

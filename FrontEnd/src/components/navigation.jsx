@@ -11,22 +11,22 @@ const Navigation = () => {
             <Link to={'/'} className='group flex flex-col items-center'>
                 <IoHomeOutline size={25}  className='group-hover:hidden'/> 
                 <IoHome size={25} className='hidden group-hover:block' />
-                <p>Beranda</p>
+                <p className="text-sm">Beranda</p>
             </Link>
             <Link to={'/blog'} className='group flex flex-col items-center'>
                 <AiOutlineProfile size={25}  className='group-hover:hidden'/> 
                 <AiFillProfile size={25} className='hidden group-hover:block' />
-                <p>Blog</p>
+                <p className="text-sm">Blog</p>
             </Link>
             <Link to={'/pendaftaran'} className='group flex flex-col items-center'>
                 <IoPersonCircleOutline size={25}  className='group-hover:hidden'/> 
                 <IoPersonCircle size={25} className='hidden group-hover:block' />
-                <p>Pendaftaran</p>
+                <p className="text-sm">Pendaftaran</p>
             </Link>
             <Link to={'/profile'} className='group flex flex-col items-center'>
                 <RiBookMarkedLine size={25}  className='group-hover:hidden'/> 
                 <RiBookMarkedFill size={25} className='hidden group-hover:block' />
-                <p>Profile</p>
+                <p className="text-sm">Profile</p>
             </Link>
         </nav>
     </div>
