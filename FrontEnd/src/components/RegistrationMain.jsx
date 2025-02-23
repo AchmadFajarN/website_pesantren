@@ -1,11 +1,8 @@
 import React from 'react'
-import { MdArrowDropDown } from "react-icons/md";
 import { useState } from 'react';
 import { motion } from 'motion/react';
 
 const RegisInfo = () => {
-    const [dropdownOnlineActive, setDropdownOnlineActive] = useState(false)
-    const [dropdownOfflineActive, setDropdownOfflineActive] = useState(false)
     const [step, setStep] = useState(true)
 
     const stepHandler = () => setStep(!step)
@@ -13,7 +10,7 @@ const RegisInfo = () => {
     const dataOffline = [
         {
             no: 2,
-            data: 'Datang ke Sekolah – Kunjungi sekolah sesuai jadwal.'
+            data: 'Datang ke tempat – Kunjungi pesantren sesuai jadwal.'
         },
         {
             no: 3,
@@ -21,7 +18,7 @@ const RegisInfo = () => {
         },
         {
             no: 4,
-            data: 'Penyerahan Dokumen – Serahkan formulir dan dokumen ke panitia pendaftaran.'
+            data: 'Penyerahan Dokumen – Serahkan formulir dan dokumen ke pihak terkait.'
         },
         {
             no: 5,
