@@ -12,7 +12,10 @@ export default {
           'yellow': '#b5d714'
         },
         'krem': '#f5d44f',
-        'dark-green': '#44852f'
+        'dark-green': '#44852f',
+        'primary-yellow': '#FFD700',
+        'accent-green': '#2E7D32',
+        'text-white': '#ffff'
       }
     },
   },

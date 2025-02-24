@@ -1,11 +1,18 @@
 import React from 'react'
 import Navbar from '../components/layout/Navbar'
+import Footer from '../components/layout/Footer'
+import BlogHeader from '../components/BlogHeader'
+import MainArticle from '../components/MainArticle'
 
 const Blog = () => {
   return (
-    <div className='max-w-screen-md min-h-screen relative'>
+    <div className=' min-h-screen relative'>
       <Navbar />
-      <p>blog</p>
+      <BlogHeader />
+      <main className="text-accent-green font-sans mb-20">
+        <MainArticle />
+      </main>
+      <Footer />
     </div>
   )
 }
