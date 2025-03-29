@@ -55,7 +55,7 @@ const RegisInfo = () => {
                 </div>
             </div>
             <motion.div initial={{opacity: 0, translateX: 40}} whileInView={{opacity: 1, translateX: 0, animationDelay: 1, transition: {duration: 1}}} className='flex-1 px-4'>
-                <p className='text-xs md:text-base font-semibold text-dark-green'>{step? 'Persiapan Dokumen – Siapkan dokumen seperti KK, Akta Kelahiran, KTP orang tua, ijazah, pas foto, dan dokumen lain yang diminta.': <>Isi form data dengan klik link ini <a className='text-blue-500' href="#form">Form pendaftaran</a></>}</p>
+                <p className='font-semibold text-dark-green'>{step? 'Persiapan Dokumen – Siapkan dokumen seperti KK, Akta Kelahiran, KTP orang tua, ijazah, pas foto, dan dokumen lain yang diminta.': <>Isi form data dengan klik link ini <a className='text-blue-500' href="#form">Form pendaftaran</a></>}</p>
             </motion.div>
         </motion.div>
         {step?
@@ -68,7 +68,7 @@ const RegisInfo = () => {
                     </div>
                 </motion.div>
                 <motion.div initial={{opacity: 0, translateX: 40}} whileInView={{opacity: 1, translateX: 0, animationDelay: 1, transition: {duration: 1}}} className='flex-1 px-4'>
-                    <p className='text-xs md:text-base font-semibold text-dark-green'>{ step.data }</p>
+                    <p className='font-semibold text-dark-green'>{ step.data }</p>
                 </motion.div>
             </motion.div>
                 )
@@ -83,7 +83,7 @@ const RegisInfo = () => {
                         </div>
                 </motion.div>
                 <motion.div initial={{opacity: 0, translateX: 40}} whileInView={{opacity: 1, translateX: 0, animationDelay: 1, transition: {duration: 1}}} className='flex-1 px-4'>
-                    <p className='text-xs md:text-base font-semibold text-dark-green'>{ step.data }</p>
+                    <p className='font-semibold text-dark-green'>{ step.data }</p>
                 </motion.div>
                 </motion.div>  
                 )

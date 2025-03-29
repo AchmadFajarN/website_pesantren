@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
+import { motion } from 'motion/react';
 
 const profileData = {
   name: "Pesantren Al-Hikmah",
@@ -33,7 +34,11 @@ const PesantrenWebsite = () => {
   return (
     <>
     <Navbar />
-    <div className="container mx-auto px-4 py-8">
+    <motion.div 
+    initial={{opacity: 0, translateY: 100}}
+    whileInView={{opacity: 1, translateY: 0}}
+    transition={{duration: 0.5}}
+     className="container mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold text-green-800 mb-4">Selamat Datang di {profileData.name}</h2>
       <p className="text-gray-600">Didirikan sejak tahun {profileData.established}</p>
       
@@ -77,7 +82,7 @@ const PesantrenWebsite = () => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
     <Footer />
     </>
     

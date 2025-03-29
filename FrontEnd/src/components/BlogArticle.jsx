@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'motion/react'
 
 const BlogArticle = () => {
   const data = [
@@ -23,14 +24,17 @@ const BlogArticle = () => {
         {
             data.map((data) => {
                 return(
-                    <div className="bg-slate-100 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    <motion.div 
+                    initial={{opacity: 0, translateY: 100}}
+                    whileInView={{opacity: 1, translateY: 0}}
+                    className="bg-slate-100 rounded-lg shadow-lg transition-transform transform hover:scale-105">
                         <img src="https://via.placeholder.com/600x400" alt="Card Image" className="w-full h-40 object-cover" />
                         <div className="p-6">
                             <h3 className="text-xl font-bold mb-2 text-dark-green">{ data.title }</h3>
                             <p className="text-accent-green mb-4">{ data.deskripsi }</p>
                             <p className="text-sm text-gray-600">{ data.date }</p>
                         </div>
-                    </div>
+                    </motion.div>
                 )
             })
         }
