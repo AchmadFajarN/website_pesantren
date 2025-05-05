@@ -1,27 +1,22 @@
-import Navbar from './components/layout/Navbar'
-import Footer from './components/layout/Footer'
-import PapanHeader from './components/PapanHeader'
-import CardWejangan from './components/CardWejangan'
-import Commentar from './components/Commentar'
-import Article from './components/Article'
-import PapanMarketing from './components/PapanMarketing'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import './Style/style.css'
+import Header from './Components/Header'
+import HomePage from './Pages/HomePage'
 
 const App = () => {
   return (
-    <>
-    <div className='max-w-screen min-h-screen relative overflow-x-hidden'>
-      <Navbar />
-      <main className='mt-[1rem] mb-[20rem]'>
-        <PapanHeader />
-        <CardWejangan />
-        <PapanMarketing />
-        <Commentar />
-        <Article />
+    <div className='relative'>
+      <Header />
+      <main>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/pendaftaran' element={<h1>pendaftaran</h1>} />
+          <Route path='/blog' element={<h1>blog</h1>} />
+          <Route path='/profile' element={<h1>profile</h1>} />
+        </Routes>
       </main>
-      <Footer />
     </div>
-    </>
   )
 }
-
 export default App
