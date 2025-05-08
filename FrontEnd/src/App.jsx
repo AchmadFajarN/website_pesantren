@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './Style/style.css'
 import Header from './Components/Header'
+import Footer from './Components/Footer'
 import HomePage from './Pages/HomePage'
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route path='/profile' element={<h1>profile</h1>} />
         </Routes>
       </main>
+      <Footer />
     </div>
   )
 }

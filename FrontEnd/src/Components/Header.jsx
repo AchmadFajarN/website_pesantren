@@ -2,16 +2,24 @@ import React from "react";
 import logo from "../assets/image/logo.png";
 import { Link } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { motion, useScroll } from "motion/react";
 
 const Header = () => {
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const unscroll = scrollY.on("change", (latest) => {
+      setScrolled(latest > 50);
+    });
+    return () => unscroll();
+  }, [scrollY]);
   const [navActive, setNavActive] = useState(false);
   const hamburgerActiveHandler = () => {
     setNavActive(!navActive);
   };
   return (
-    <header className="fixed w-full flex justify-between p-4 md:px-8 items-center">
+    <header className={`fixed ${scrolled? 'bg-white/80 backdrop-blur-md border-b-4 border-green-600 shadow-md' : 'bg-transparent'} w-full flex justify-between z-40 p-4 md:px-8 items-center`}>
       <motion.div
         initial={{ opacity: 0, translateX: -35 }}
         animate={{ opacity: 1, translateX: 0 }}
@@ -26,7 +34,7 @@ const Header = () => {
         hamburgerActiveHandler={hamburgerActiveHandler}
       />
       <nav
-        className={`scale-0 opacity-0 fixed z-10 inset-0 md:static md:opacity-[1] md:scale-[1] md:bg-transparent transition-all duration-200 ease-in-out flex justify-center items-center bg-yellow-200 ${
+        className={`scale-0 opacity-0 absolute h-screen md:h-0 inset-0 z-10 md:static md:opacity-[1] md:scale-[1] transition-all duration-200 ease-in-out flex justify-center items-center bg-white/80 backdrop-blur-md ${
           navActive ? "scale-[1] opacity-[1]" : ""
         }`}
       >
