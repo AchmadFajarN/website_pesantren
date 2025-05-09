@@ -4,6 +4,10 @@ import foto3 from '../src/assets/image/fotoSesi4.jpg'
 import foto4 from '../src/assets/image/fotoSesi5.jpg'
 import foto5 from '../src/assets/image/fotoSesi6.jpg'
 import foto6 from '../src/assets/image/fotoSesi7.jpg'
+import kelulusan from '../src/assets/image/future.jpg'
+import kurikulum from '../src/assets/image/kurikulum.jpg'
+import lingkungan from '../src/assets/image/lingkungan.jpg'
+import kitabKuning from '../src/assets/image/kitab-kuning.jpeg'
 
 
 let data = [
@@ -61,6 +65,38 @@ let data = [
   },
 ];
 
+const keunggulan = [
+  {
+    title: "Kurikulum Terpadu",
+    emoji: "📚",
+    description:
+      "Pendidikan agama melalui kitab kuning dan kurikulum umum berjalan beriringan sesuai standar kesetaraan.",
+    imgUrl: kurikulum,
+  },
+  {
+    title: "Pembelajaran Klasikal",
+    emoji: "🕌",
+    description:
+      "Kitab-kitab klasik diajarkan secara bertingkat, menyesuaikan jenjang dan kemampuan santri.",
+    imgUrl: kitabKuning
+  },
+  {
+    title: "Lingkungan Islami",
+    emoji: "🌱",
+    description:
+      "Adab, kedisiplinan, dan kebersamaan menjadi nilai utama dalam kehidupan santri sehari-hari.",
+    imgUrl: lingkungan
+  },
+  {
+    title: "Masa Depan Terbuka",
+    emoji: "🎓",
+    description:
+      "Santri siap melanjutkan pendidikan ke jenjang lebih tinggi, baik umum maupun keagamaan.",
+    imgUrl: kelulusan
+  },
+
+];
+
 const animateFunc = (duration) => {
   return {
     initial: {
@@ -85,5 +121,5 @@ const getAllData = () => {
 const getDataById = (id) => {
   return data.filter((item) => item.id === id);
 };
-export { animateFunc, getAllData, getDataById };
+export { animateFunc, getAllData, getDataById, keunggulan };
 

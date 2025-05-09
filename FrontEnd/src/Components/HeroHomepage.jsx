@@ -21,7 +21,7 @@ const HeroHomepage = () => {
         transition={animateFunc(0.6).transition}
         className="text-lg sm:text-xl font-bold text-yellow-600 md:text-2xl lg:text-3xl md:mt-4"
       >
-        Nurul Hikmah Assalafiyyah
+        Nurul Hikmah Assalafy
       </motion.p>
       <motion.p
         initial={animateFunc().initial}
@@ -50,7 +50,7 @@ const HeroHomepage = () => {
           Info Pendaftaran?
         </motion.p>
       </Link>
-      <a href="" className="absolute bottom-14 text-green-700 animate-bounce" >
+      <a href="#sectionHomepage" className="absolute bottom-14 text-green-700 animate-bounce" >
         <ArrowDown className="" />
       </a>
     </section>

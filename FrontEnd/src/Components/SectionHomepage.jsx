@@ -1,47 +1,27 @@
 import React from "react";
 import { motion } from "motion/react";
 import { animateFunc } from "../../utils";
-import kelulusan from '../assets/image/future.jpg'
-import kurikulum from '../assets/image/kurikulum.jpg'
-import lingkungan from '../assets/image/lingkungan.jpg'
-import kitabKuning from '../assets/image/kitab-kuning.jpeg'
-
-const keunggulan = [
-  {
-    title: "Kurikulum Terpadu",
-    emoji: "📚",
-    description:
-      "Pendidikan agama melalui kitab kuning dan kurikulum umum berjalan beriringan sesuai standar kesetaraan.",
-    imgUrl: kurikulum,
-  },
-  {
-    title: "Pembelajaran Klasikal",
-    emoji: "🕌",
-    description:
-      "Kitab-kitab klasik diajarkan secara bertingkat, menyesuaikan jenjang dan kemampuan santri.",
-    imgUrl: kitabKuning
-  },
-  {
-    title: "Lingkungan Islami",
-    emoji: "🌱",
-    description:
-      "Adab, kedisiplinan, dan kebersamaan menjadi nilai utama dalam kehidupan santri sehari-hari.",
-    imgUrl: lingkungan
-  },
-  {
-    title: "Masa Depan Terbuka",
-    emoji: "🎓",
-    description:
-      "Santri siap melanjutkan pendidikan ke jenjang lebih tinggi, baik umum maupun keagamaan.",
-    imgUrl: kelulusan
-  },
-
-];
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import CardBgTrsnp from "./CardBgTrsnp";
+import { keunggulan } from "../../utils";
+import QuoteHomepage from "./QuoteHomepage";
+import Underline from "./Underline";
 
 const SectionHomepage = () => {
   return (
-    <section className="my-[10rem]">
-      <div className="mx-auto px-4">
+    <section id="sectionHomepage" className="my-[10rem]">
+      <motion.h1
+        initial={animateFunc().initial}
+        whileInView={animateFunc().animate}
+        transition={animateFunc(0.7).transition}
+        className="font-bold text-green-700 text-xl"
+      >
+        Sekilas Tentang Kami
+      </motion.h1>
+      <Underline />
+      <QuoteHomepage />
+      <div className="mx-auto mt-[10rem] px-4">
         <motion.h2
           initial={animateFunc().initial}
           whileInView={animateFunc().animate}
@@ -60,28 +40,25 @@ const SectionHomepage = () => {
           Islami yang mendidik dan membentuk karakter.
         </motion.p>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6">
           {keunggulan.map((item, index) => (
-            <motion.div 
-            initial={animateFunc().initial} 
-            whileInView={animateFunc().animate} 
-            transition={animateFunc(`0.${5 + index}`).transition}
-            key={index} className="flex items-center gap-4">
-              <div className="w-full md:w-48 h-32 flex-1 bg-gray-200 overflow-hidden rounded-lg shadow-sm flex items-center justify-center">
-                <img src={item.imgUrl} alt="" className="w-full h-full object-center object-cover" />
-              </div>
-              <div className="flex-1 py-2">
-                <h3 className="sm:text-xl text-sm font-semibold text-green-700 mb-2">
-                  <span className="mr-2">{item.emoji}</span>
-                  {item.title}
-                </h3>
-                <p className="text-yellow-600 font-semibold sm:text-sm text-xs">
-                  {item.description}
-                </p>
-              </div>
-            </motion.div>
+            <CardBgTrsnp key={index} index={index} item={item} />
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, translateX: -40 }}
+          whileInView={{ opacity: 1, translateX: 0 }}
+          transition={animateFunc(1).transition}
+          className="group inline-block"
+        >
+          <Link to={"/profile"} className="flex items-center gap-2 mt-20">
+            <p className=" text-green-700 font-bold">
+              Kenali lebih tentang kami
+            </p>
+            <ArrowRight className="text-green-700" />
+          </Link>
+          <span className="inline-block h-[2px] bg-green-700 w-full scale-x-0 group-hover:scale-[1] origin-left transition-transform ease-in-out duration-200"></span>
+        </motion.div>
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className='mt-[10rem] bg-green-700 p-8'>
         <div className='flex flex-col gap-2 md:flex-row items-start md:items-center md:justify-between'>
-            <h2 className='font-bold text-white'>Ponpes Nurul Hikmah assallafy</h2>
+            <h2 className='font-bold text-white'>Ponpes Nurul Hikmah assalafy</h2>
             <div>
                 <a href="" className='mr-2 inline-block text-white'><Facebook /></a>
                 <a href="" className='inline-block text-white'><Mail /></a>
