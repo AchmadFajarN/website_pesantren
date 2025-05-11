@@ -4,6 +4,7 @@ import './Style/style.css'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
 import HomePage from './Pages/HomePage'
+import Pendaftaran from './Pages/Pendaftaran'
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
       <main>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/pendaftaran' element={<h1>pendaftaran</h1>} />
+          <Route path='/pendaftaran' element={<Pendaftaran />} />
           <Route path='/blog' element={<h1>blog</h1>} />
           <Route path='/profile' element={<h1>profile</h1>} />
         </Routes>

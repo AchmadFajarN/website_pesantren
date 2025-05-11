@@ -8,7 +8,7 @@ import { animateFunc } from "../../utils";
 const ArtikelHomepage = () => {
   const data = getAllData();
   return (
-    <div className="my-10">
+    <section className="my-10">
       <motion.h1
         initial={animateFunc().initial}
         whileInView={animateFunc().animate}
@@ -23,7 +23,7 @@ const ArtikelHomepage = () => {
           return <CardArtikel key={index} data={data} transitionAnimate={`0.${5 + index}`} />;
         })}
       </div>
-    </div>
+    </section>
   );
 };
 

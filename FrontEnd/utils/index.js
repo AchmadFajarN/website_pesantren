@@ -1,15 +1,132 @@
-import foto1 from '../src/assets/image/fotoSesi2.jpg'
-import foto2 from '../src/assets/image/fotoSesi3.jpg'
-import foto3 from '../src/assets/image/fotoSesi4.jpg'
-import foto4 from '../src/assets/image/fotoSesi5.jpg'
-import foto5 from '../src/assets/image/fotoSesi6.jpg'
-import foto6 from '../src/assets/image/fotoSesi7.jpg'
-import kelulusan from '../src/assets/image/future.jpg'
-import kurikulum from '../src/assets/image/kurikulum.jpg'
-import lingkungan from '../src/assets/image/lingkungan.jpg'
-import kitabKuning from '../src/assets/image/kitab-kuning.jpeg'
+import foto1 from "../src/assets/image/fotoSesi2.jpg";
+import foto2 from "../src/assets/image/fotoSesi3.jpg";
+import foto3 from "../src/assets/image/fotoSesi4.jpg";
+import foto4 from "../src/assets/image/fotoSesi5.jpg";
+import foto5 from "../src/assets/image/fotoSesi6.jpg";
+import foto6 from "../src/assets/image/fotoSesi7.jpg";
+import kelulusan from "../src/assets/image/future.jpg";
+import kurikulum from "../src/assets/image/kurikulum.jpg";
+import lingkungan from "../src/assets/image/lingkungan.jpg";
+import kitabKuning from "../src/assets/image/kitab-kuning.jpeg";
+import pramuka from '../src/assets/image/pramuka2.jpg'
+import smpClass from '../src/assets/image/smp2.jpg'
 
-
+let kelasDanKurikulum = [
+  {
+    kelas: "I'Dad",
+    pelajaran: [
+      "Bimbingan Ibadah",
+      "BTQ (Baca Tulis Alqur'an)",
+      "Nadhom Aqidah",
+      "Nadhom Fiqih",
+      "Tajwid",
+      "Tafshiran",
+      "Tarkiban",
+      "Hafalan surat pendek",
+    ],
+  },
+  {
+    kelas: "Ibtida I",
+    pelajaran: [
+      "Bimbingan Ibadah",
+      "BTQ (Baca Tulis Alqur'an)",
+      "Jauhar Kalamiyah",
+      "Mabadi' Fiqih",
+      "Akhlaqul Banin",
+      "Tajwid",
+      "Tashrifan",
+      "Tarkiban",
+      "Hafalan Jurumiyah",
+    ],
+  },
+  {
+    kelas: "Ibtida II",
+    pelajaran: [
+      "Tajwid",
+      "Tashrifan (Bina)",
+      "Tijan",
+      "Safinah",
+      "Jurumiyah",
+      "Kailani",
+      "Washoya",
+      "Hafalan Nadzom Yaqulu",
+    ],
+  },
+  {
+    kelas: "Wustho I",
+    pelajaran: [
+      "Imrithi",
+      "Yaqulu",
+      "Tashrifan (Qiyas)",
+      "Safinah/Riyadh",
+      "A'dabul Muta'alim wal Muta'alim",
+      "Nur Dholam",
+      "Tanqihul Qoul",
+      "Hafalan Imrithi",
+    ],
+  },
+  {
+    kelas: "Wustho II",
+    pelajaran: [
+      "Imrithi",
+      "Yaqulu",
+      "Fathul Majid",
+      "Riyadh",
+      "Ta'limul Muta'alim",
+      "Arba'in Nawawi",
+      "Tashrifan (Ngelal/Ngasal)",
+      "Hafalan Imrithi",
+    ],
+  },
+  {
+    kelas: "Wustho III",
+    pelajaran: [
+      "Alfiyah Ibnu Malik",
+      "Sulamuttaufiq",
+      "Baiquniyah",
+      "Fathul Qarib",
+      "Ta'limul Muta'alim",
+      "Fathul Majid",
+      "Sulam Munawaroq",
+      "Hafalan Alfiyah",
+    ],
+  },
+  {
+    kelas: "Ulya I",
+    pelajaran: [
+      "Alfiyah Ibn Malik",
+      "I'anah",
+      "Bulughul Maram",
+      "Kiyayatul Atiqiya",
+      "Ta'limul Muta'alim",
+      "Jauhar Maknun",
+      "Hafalan Alfiyah",
+    ],
+  },
+  {
+    kelas: "Ulya II",
+    pelajaran: [
+      "Alfiyah Ibn Malik",
+      "I'anah",
+      "Bulughul Maram",
+      "Tafsir Jalalin",
+      "Jauhar Maknun",
+      "Hafalan Alfiyah",
+    ],
+  },
+  {
+    kelas: "Ma'had Ali",
+    pelajaran: [
+      "Tafsir Jalalain",
+      "Falaq",
+      "Jam'ul Jawami'",
+      "Bulughul Maram",
+      "Waraqat",
+      "Hafalan Sulam Munawaroq",
+      "Jauhar Maknun",
+    ],
+  },
+];
 let data = [
   {
     id: 1,
@@ -78,23 +195,35 @@ const keunggulan = [
     emoji: "🕌",
     description:
       "Kitab-kitab klasik diajarkan secara bertingkat, menyesuaikan jenjang dan kemampuan santri.",
-    imgUrl: kitabKuning
+    imgUrl: kitabKuning,
+  },
+  {
+    title: "Jenjang Menengah (SMP)",
+  emoji: "🏫",
+  description:
+    "Masa transisi penting bagi santri untuk memperkuat dasar ilmu agama dan umum secara seimbang.",
+  imgUrl: smpClass
   },
   {
     title: "Lingkungan Islami",
     emoji: "🌱",
     description:
       "Adab, kedisiplinan, dan kebersamaan menjadi nilai utama dalam kehidupan santri sehari-hari.",
-    imgUrl: lingkungan
+    imgUrl: lingkungan,
+  },
+  {
+    title: "Berbagai Ekstrakulikuler",
+    emoji: "⛺",
+    description: "Mengasah potensi dan karakter melalui kegiatan yang menyenangkan dan bermakna.",
+    imgUrl: pramuka
   },
   {
     title: "Masa Depan Terbuka",
     emoji: "🎓",
     description:
       "Santri siap melanjutkan pendidikan ke jenjang lebih tinggi, baik umum maupun keagamaan.",
-    imgUrl: kelulusan
+    imgUrl: kelulusan,
   },
-
 ];
 
 const animateFunc = (duration) => {
@@ -121,5 +250,4 @@ const getAllData = () => {
 const getDataById = (id) => {
   return data.filter((item) => item.id === id);
 };
-export { animateFunc, getAllData, getDataById, keunggulan };
-
+export { animateFunc, getAllData, getDataById, keunggulan, kelasDanKurikulum };

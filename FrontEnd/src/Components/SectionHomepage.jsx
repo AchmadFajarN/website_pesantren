@@ -14,7 +14,7 @@ const SectionHomepage = () => {
       <motion.h1
         initial={animateFunc().initial}
         whileInView={animateFunc().animate}
-        transition={animateFunc(0.7).transition}
+        transition={animateFunc(0.5).transition}
         className="font-bold text-green-700 text-xl"
       >
         Sekilas Tentang Kami
