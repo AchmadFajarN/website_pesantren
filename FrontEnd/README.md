@@ -1,8 +1,30 @@
-# React + Vite
+Jalankan Client Side
+==
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Setelah di clone install package dengan mengetik di terminal:
 
-Currently, two official plugins are available:
+```bash
+npm install
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> Pastikan direktori berada di alamat yang tepat: `website_pesantren/FrontEnd`
+
+- Setelah terinstall jalankan:
+```bash
+npm run dev
+```
+Pastikan di terminal:
+```
+> frontend@0.0.0 dev
+> vite
+
+
+  VITE v6.3.5  ready in 2071 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+```
+
+- Akses di browser `https://localhost:5173`

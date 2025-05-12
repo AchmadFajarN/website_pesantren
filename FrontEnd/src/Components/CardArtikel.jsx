@@ -5,7 +5,7 @@ import { animateFunc } from '../../utils'
 
 const CardArtikel = ({data, transitionAnimate}) => {
   return (
-    <motion.div initial={animateFunc().initial} whileInView={animateFunc().animate} transition={animateFunc(transitionAnimate).transition} className='flex gap-4 max-h-[10rem] md:max-w-[26rem] p-4 rounded-md shadow-md bg-slate-100'>
+    <motion.div initial={animateFunc().initial} whileInView={animateFunc().animate} transition={animateFunc(transitionAnimate).transition} className='flex gap-4 max-h-[10rem] p-4 rounded-md shadow-md bg-slate-100'>
         <div className='flex-1/2 rounded-md overflow-hidden'>
             <img src={ data.imageUrl } alt="" className='w-full h-full object-cover' />
         </div>

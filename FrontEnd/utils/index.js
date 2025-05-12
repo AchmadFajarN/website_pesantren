@@ -8,8 +8,8 @@ import kelulusan from "../src/assets/image/future.jpg";
 import kurikulum from "../src/assets/image/kurikulum.jpg";
 import lingkungan from "../src/assets/image/lingkungan.jpg";
 import kitabKuning from "../src/assets/image/kitab-kuning.jpeg";
-import pramuka from '../src/assets/image/pramuka2.jpg'
-import smpClass from '../src/assets/image/smp2.jpg'
+import pramuka from "../src/assets/image/pramuka2.jpg";
+import smpClass from "../src/assets/image/smp2.jpg";
 
 let kelasDanKurikulum = [
   {
@@ -199,10 +199,10 @@ const keunggulan = [
   },
   {
     title: "Jenjang Menengah (SMP)",
-  emoji: "🏫",
-  description:
-    "Masa transisi penting bagi santri untuk memperkuat dasar ilmu agama dan umum secara seimbang.",
-  imgUrl: smpClass
+    emoji: "🏫",
+    description:
+      "Masa transisi penting bagi santri untuk memperkuat dasar ilmu agama dan umum secara seimbang.",
+    imgUrl: smpClass,
   },
   {
     title: "Lingkungan Islami",
@@ -214,8 +214,9 @@ const keunggulan = [
   {
     title: "Berbagai Ekstrakulikuler",
     emoji: "⛺",
-    description: "Mengasah potensi dan karakter melalui kegiatan yang menyenangkan dan bermakna.",
-    imgUrl: pramuka
+    description:
+      "Mengasah potensi dan karakter melalui kegiatan yang menyenangkan dan bermakna.",
+    imgUrl: pramuka,
   },
   {
     title: "Masa Depan Terbuka",
@@ -223,6 +224,60 @@ const keunggulan = [
     description:
       "Santri siap melanjutkan pendidikan ke jenjang lebih tinggi, baik umum maupun keagamaan.",
     imgUrl: kelulusan,
+  },
+];
+
+let administrasiMuqimAndSmp = [
+  {
+    name: "Registrasi",
+    price: 10000,
+  },
+  {
+    name: "Syahriahan 2 bulan",
+    price: 50000,
+  },
+  {
+    name: "Perawatan Bangunan",
+    price: 50000,
+  },
+  {
+    name: "Buku Pedoman Santri",
+    price: 50000,
+  },
+  {
+    name: "Map Rapot",
+    price: 50000,
+  },
+  {
+    name: "Paket Kitab 1 tahun",
+    price: 150000,
+  },
+  {
+    name: "Infaq Makan 1 bulan",
+    price: 450000,
+  },
+  {
+    name: "Semeter 1",
+    price: 150000,
+  },
+];
+
+let administrasiNonMuqimAndSmp = [
+  {
+    name: "Registrasi",
+    price: 10000,
+  },
+  {
+    name: "Map Rapot",
+    price: 50000,
+  },
+  {
+    name: "Paket Kitab 1 tahun",
+    price: 150000,
+  },
+  {
+    name: "Semester/2 Semester",
+    price: 150000,
   },
 ];
 
@@ -250,4 +305,18 @@ const getAllData = () => {
 const getDataById = (id) => {
   return data.filter((item) => item.id === id);
 };
-export { animateFunc, getAllData, getDataById, keunggulan, kelasDanKurikulum };
+
+function formatRupiah(angka) {
+  return 'Rp. ' + angka.toLocaleString("id-ID");
+}
+
+export {
+  animateFunc,
+  getAllData,
+  getDataById,
+  keunggulan,
+  kelasDanKurikulum,
+  administrasiMuqimAndSmp,
+  administrasiNonMuqimAndSmp,
+  formatRupiah
+};
