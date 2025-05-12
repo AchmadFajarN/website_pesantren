@@ -1,24 +1,30 @@
-# Jalankan Website
-pindah direktori ke FronEnd folder secara manual atau dengan mengetik di terminal:
+Jalankan Client Side
+==
+
+- Setelah di clone install package dengan mengetik di terminal:
+
 ```bash
-cd FrontEnd
-```
-pastikan terminal anda berada di path yang tepat, contoh:
-`
-C:user/user/web_pesantren/FrontEnd
-`
-Lalu install module dengan ketik ini di terminal:
-``` bash 
-npm i
-```
-atau:
-``` bash
 npm install
 ```
-Setelah sukses menginstall jalankan:
+
+> Pastikan direktori berada di alamat yang tepat: `website_pesantren/FrontEnd`
+
+- Setelah terinstall jalankan:
 ```bash
 npm run dev
 ```
-lalu akses web di browser dengan url:
-[localhost:5173](http://localhost:5173)
+Pastikan di terminal:
+```
+> frontend@0.0.0 dev
+> vite
 
+
+  VITE v6.3.5  ready in 2071 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+```
+
+- Akses di browser `https://localhost:5173`
