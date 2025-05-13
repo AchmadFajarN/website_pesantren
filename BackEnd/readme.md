@@ -274,14 +274,26 @@ git clone <repository-url>
 # Change directory
 cd website_pesantren/BackEnd
 
+# Initialize Go module (if not already done)
+go mod init website_pesantren
+
 # Install dependencies
+go mod tidy
 go mod download
 
-# Setup environment variables (copy .env.example)
+# Setup environment variables
 cp .env.example .env
 
-# Edit .env file sesuai konfigurasi database Anda
-nano .env
+# Edit .env file sesuai konfigurasi database
+```
+
+### Dependencies
+Main external packages used:
+```go
+github.com/gin-gonic/gin       // Web framework
+github.com/lib/pq              // PostgreSQL driver
+github.com/joho/godotenv       // Environment configuration
+github.com/go-playground/validator/v10  // Validation
 ```
 
 ### Database Setup
@@ -295,12 +307,30 @@ psql -U postgres -d web-pesantren -a -f db/prequisite.sql
 
 ### Running the Server
 ```bash
-# Run the server
+# Run in development mode
 go run main.go
 
-# For production, build and run
-go build
-./website_pesantren
+# Build for production
+go build -o website_pesantren
+
+# Run in production mode
+GIN_MODE=release ./website_pesantren
+
+# Cross compile for different platforms (if needed)
+# For Windows
+GOOS=windows GOARCH=amd64 go build -o website_pesantren.exe
+
+# For Linux
+GOOS=linux GOARCH=amd64 go build -o website_pesantren
+```
+
+### Development Tools
+- Install Air for hot reload (optional)
+```bash
+go install github.com/cosmtrek/air@latest
+
+# Run with hot reload
+air
 ```
 
 ### Environment Variables
@@ -313,7 +343,22 @@ DB_PASSWORD=your_password
 DB_NAME=web-pesantren
 ```
 
-## Testing Examples
+## Testing
+
+### Running Tests
+```bash
+# Run all tests
+go test ./...
+
+# Run tests with coverage
+go test -cover ./...
+
+# Run specific package tests
+go test ./controllers
+go test ./services
+```
+
+### Manual Testing Examples
 
 ### Create Student (curl)
 ```bash
@@ -350,12 +395,12 @@ curl -X POST http://localhost:8080/api/articles \
 
 ### Get All Articles
 ```bash
-curl http://localhost:3000/api/articles
+curl http://localhost:8080/api/articles
 ```
 
 ### Update Article
 ```bash
-curl -X PUT http://localhost:3000/api/articles/1 \
+curl -X PUT http://localhost:8080/api/articles/1 \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Updated Title",
