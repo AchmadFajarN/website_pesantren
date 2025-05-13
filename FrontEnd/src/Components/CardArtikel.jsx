@@ -10,7 +10,7 @@ const CardArtikel = ({data, transitionAnimate}) => {
             <img src={ data.imageUrl } alt="" className='w-full h-full object-cover' />
         </div>
         <div className='flex-1/2'>
-            { data.tag.map((data) => <span className='text-xs font-bold mr-2 text-yellow-600'>{data}</span>) }
+            { data.tag.map((data, index) => <span key={index} className='text-xs font-bold mr-2 text-yellow-600'>{data}</span>) }
             <h3 className='font-bold text-lg text-green-700 line-clamp-2 leading-5'>{ data.title }</h3>
             <p className='text-xs font-bold my-2 text-green-700'>{ data.createdAt }</p>
             <p className='line-clamp-2 leading-5 text-green-700 font-semibold'>{data.body}</p>

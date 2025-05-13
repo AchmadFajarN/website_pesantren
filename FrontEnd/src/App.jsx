@@ -5,20 +5,21 @@ import Header from './Components/Header'
 import Footer from './Components/Footer'
 import HomePage from './Pages/HomePage'
 import Pendaftaran from './Pages/Pendaftaran'
+import Profile from './Pages/Profile'
 
 const App = () => {
   return (
-    <div className=''>
-      <Header />
-      <main>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/pendaftaran' element={<Pendaftaran />} />
-          <Route path='/blog' element={<h1>blog</h1>} />
-          <Route path='/profile' element={<h1>profile</h1>} />
-        </Routes>
-      </main>
-      <Footer />
+    <div>
+        <Header />
+        <main>
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/pendaftaran' element={<Pendaftaran />} />
+            <Route path='/blog' element={<h1>blog</h1>} />
+            <Route path='/profile' element={<Profile/>} />
+          </Routes>
+        </main>
+        <Footer />
     </div>
   )
 }

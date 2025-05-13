@@ -42,7 +42,7 @@ const SectionHomepage = () => {
 
         <div className="grid md:grid-cols-2 gap-6">
           {keunggulan.map((item, index) => (
-            <CardBgTrsnp key={index} index={index} item={item} />
+            <CardBgTrsnp key={index} textColor={'text-yellow-600'} index={index} item={item} />
           ))}
         </div>
         <motion.div

@@ -6,15 +6,15 @@ import { motion } from "motion/react";
 
 const OfflinePendaftaran = () => {
   return (
-    <div className="my-8 flex flex-col justify-center md:flex-row md:h-[23.5rem] gap-8">
-      <div className="h-full md:flex-2 flex flex-col gap-3">
+    <div className="my-10 flex flex-col justify-center lg:flex-row md:h-[23.5rem] gap-8">
+      <div className="h-full lg:flex-2 flex flex-col gap-3">
         <motion.h2 initial={animateFunc().initial} whileInView={animateFunc().animate} transition={animateFunc(0.5).transition} className="text-xl font-bold text-green-700">
           Pendaftaran Offline
         </motion.h2>
         <Underline />
-        <motion.div initial={animateFunc().initial} whileInView={animateFunc().animate} transition={animateFunc(0.5).transition} className="flex-2 px-8 pt-4 bg-slate-100 shadow-md rounded-md">
-          <h3 className="font-bold text-green-700">Alur Pendaftaran:</h3>
-          <ul className="list-disc px-4 pt-4 text-yellow-600 font-semibold">
+        <motion.div initial={animateFunc().initial} whileInView={animateFunc().animate} transition={animateFunc(0.5).transition} className="flex-2 py-4 px-8 pt-4 bg-slate-100 shadow-md rounded-md">
+          <h3 className="font-bold text-yellow-600">Alur Pendaftaran:</h3>
+          <ul className="list-disc px-4 pt-4 text-green-700 font-semibold">
             <li>Silaturahmi ke Dewan Masyaikh</li>
             <li>Mengisi Formulir Pendaftaran</li>
             <li>
@@ -31,7 +31,7 @@ const OfflinePendaftaran = () => {
           </ul>
         </motion.div>
       </div>
-      <div className="md:flex-4">
+      <div className="lg:flex-4">
         <motion.h2 initial={animateFunc().initial} whileInView={animateFunc().animate} transition={animateFunc(0.5).transition} className="text-md font-bold text-green-700">
           Pembayaran Administrasi
         </motion.h2>

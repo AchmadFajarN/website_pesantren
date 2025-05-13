@@ -4,7 +4,7 @@ import PendaftaranSection from '../Components/PendaftaranSection'
 
 const Pendaftaran = () => {
   return (
-    <div className='px-5 md:px-8'>
+    <div className='px-6 md:px-8'>
       <KurikulumPendaftaran />
       <PendaftaranSection />
     </div>
