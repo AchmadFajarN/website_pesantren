@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+CREATE TYPE GENDER AS ENUM ('Laki-laki', 'Perempuan');
+
 CREATE TABLE registration_sequence (
   year INT PRIMARY KEY,
   last_sequence INT NOT NULL DEFAULT 0
@@ -22,4 +24,14 @@ CREATE TABLE students (
   asal_sekolah VARCHAR(100) NOT NULL,
   tahun_lulus INT NOT NULL,
   tanggal_daftar TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE articles (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  header VARCHAR(255) NOT NULL,
+  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  author VARCHAR(255) NOT NULL,
+  body TEXT NOT NULL,
+  photo VARCHAR(255)
 );
