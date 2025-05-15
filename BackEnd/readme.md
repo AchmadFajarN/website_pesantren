@@ -312,11 +312,141 @@ Content-Type: application/json
   "tahun_lulus": 2023,
   "tanggal_daftar": "2025-05-13T10:30:00Z"
 }
+```
 
 ### 5. Delete Student
 **DELETE** `/api/students/{nomor}`
 
 **Response (204 No Content)**
+
+## Authentication
+
+All API endpoints except authentication endpoints require JWT token in the Authorization header.
+
+### Headers for Protected Routes
+```http
+Authorization: Bearer <your-jwt-token>
+```
+
+### Authentication Endpoints
+
+#### 1. Register New User
+**POST** `/api/auth/register`
+
+**Headers:**
+```http
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "username": "testuser",
+  "password": "password123",
+  "email": "test@example.com"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "username": "testuser",
+  "email": "test@example.com",
+  "role": "user",
+  "created_at": "2025-05-15T10:30:00Z",
+  "last_login_at": null
+}
+```
+
+#### 2. Login
+**POST** `/api/auth/login`
+
+**Headers:**
+```http
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "username": "testuser",
+  "password": "password123"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "username": "testuser",
+    "email": "test@example.com",
+    "role": "user",
+    "created_at": "2025-05-15T10:30:00Z",
+    "last_login_at": "2025-05-15T10:35:00Z"
+  }
+}
+```
+
+### Default Admin Account
+```
+Username: admin
+Password: admin123
+```
+
+### Authentication Error Responses
+
+**Invalid Credentials (401 Unauthorized):**
+```json
+{
+  "error": "username atau password salah"
+}
+```
+
+**Missing Token (401 Unauthorized):**
+```json
+{
+  "error": "Authorization header is required"
+}
+```
+
+**Invalid Token (401 Unauthorized):**
+```json
+{
+  "error": "Invalid token"
+}
+```
+
+**Insufficient Permissions (403 Forbidden):**
+```json
+{
+  "error": "Admin access required"
+}
+```
+
+### Role-Based Access Control
+
+1. Public Endpoints (no authentication required):
+   - POST `/api/auth/register`
+   - POST `/api/auth/login`
+
+2. Authenticated User Access:
+   - GET `/api/articles`
+   - GET `/api/articles/{id}`
+   - GET `/api/students`
+   - GET `/api/students/{nomor}`
+
+3. Admin Only Access:
+   - POST, PUT, DELETE `/api/articles/*`
+   - POST, PUT, DELETE `/api/students/*`
+
+### Environment Variables
+Add these variables to your `.env` file:
+```env
+JWT_SECRET=your-256-bit-secret  # Required for JWT signing
+```
 
 ## Setup and Usage
 
@@ -534,6 +664,53 @@ curl -X PUT http://localhost:8080/api/articles/1 \
 curl -X DELETE http://localhost:8080/api/articles/1
 ```
 
+### Authentication Examples
+
+#### 1. Register New User
+```bash
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "password123",
+    "email": "test@example.com"
+  }'
+```
+
+#### 2. Login and Get Token
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "password123"
+  }'
+```
+
+#### 3. Using Protected Endpoints
+```bash
+# Store your token in a variable (Linux/Mac)
+TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "password123"}' \
+  | jq -r '.token')
+
+# Use the token with protected endpoints
+curl http://localhost:8080/api/articles \
+  -H "Authorization: Bearer $TOKEN"
+
+# Admin-only endpoint example
+curl -X POST http://localhost:8080/api/articles \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "New Article",
+    "header": "Article Header",
+    "author": "John Doe",
+    "body": "Article content..."
+  }'
+```
+
 ### Example Response Formats
 
 #### Successful Paginated Response
@@ -585,3 +762,11 @@ curl -X DELETE http://localhost:8080/api/articles/1
 | author  | Required, string (max 255)     |
 | body    | Required, string               |
 | photo   | Optional, valid URL format     |
+
+### User Validation
+| Field            | Rules                                     |
+|------------------|-------------------------------------------|
+| username         | Required, string (max 50), unique         |
+| password         | Required, string (min 8 characters)       |
+| email            | Required, valid email format, unique      |
+| role             | Auto-assigned, enum ("user" or "admin")   |
