@@ -34,13 +34,14 @@ func (s *ArticleService) CreateArticle(article *models.Article) (*models.Article
 	return createdArticle, nil
 }
 
-// GetAllArticles retrieves all articles
-func (s *ArticleService) GetAllArticles() ([]models.Article, error) {
-	articles, err := s.repo.FindAll()
+// GetAllArticles retrieves all articles with pagination
+func (s *ArticleService) GetAllArticles(page, limit int) ([]models.Article, int, error) {
+	offset := (page - 1) * limit
+	articles, total, err := s.repo.FindAll(offset, limit)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch articles: %v", err)
+		return nil, 0, fmt.Errorf("failed to fetch articles: %v", err)
 	}
-	return articles, nil
+	return articles, total, nil
 }
 
 // GetArticleByID retrieves an article by its ID

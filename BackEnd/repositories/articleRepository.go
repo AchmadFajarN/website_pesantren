@@ -48,11 +48,25 @@ func (r *ArticleRepository) Create(article *models.Article) (*models.Article, er
 	return &result, nil
 }
 
-// FindAll retrieves all articles ordered by date
-func (r *ArticleRepository) FindAll() ([]models.Article, error) {
-	rows, err := r.db.Query("SELECT id, title, header, date, author, body, photo FROM articles ORDER BY date DESC")
+// FindAll retrieves articles with pagination ordered by date
+func (r *ArticleRepository) FindAll(offset, limit int) ([]models.Article, int, error) {
+	// Get total count
+	var total int
+	err := r.db.QueryRow("SELECT COUNT(*) FROM articles").Scan(&total)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
+	}
+
+	// Get paginated articles
+	query := `
+		SELECT id, title, header, date, author, body, photo
+		FROM articles
+		ORDER BY date DESC
+		LIMIT $1 OFFSET $2`
+
+	rows, err := r.db.Query(query, limit, offset)
+	if err != nil {
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -69,11 +83,16 @@ func (r *ArticleRepository) FindAll() ([]models.Article, error) {
 			&article.Photo,
 		)
 		if err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		articles = append(articles, article)
 	}
-	return articles, rows.Err()
+
+	if err = rows.Err(); err != nil {
+		return nil, 0, err
+	}
+
+	return articles, total, nil
 }
 
 // FindByID retrieves an article by its ID
