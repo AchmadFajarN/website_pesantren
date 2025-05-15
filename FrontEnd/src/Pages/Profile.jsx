@@ -4,7 +4,7 @@ import VisiDanMisi from '../Components/VisiDanMisi'
 
 const Profile = () => {
   return (
-    <div className='w-full min-h-screen px-6 pt-[10rem]'>
+    <div className='w-full min-h-screen px-6 md:px-8 pt-[10rem]'>
       <EducationSistem />
       <VisiDanMisi />
     </div>
