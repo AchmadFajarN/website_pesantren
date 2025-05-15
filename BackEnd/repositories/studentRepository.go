@@ -120,11 +120,19 @@ func (r *StudentRepository) Create(student *models.Student) (*models.Student, er
 	return &result, nil
 }
 
-// FindAll retrieves all students ordered by registration date
-func (r *StudentRepository) FindAll() ([]models.Student, error) {
-	rows, err := r.db.Query("SELECT * FROM students ORDER BY tanggal_daftar DESC")
+// FindAll retrieves all students ordered by registration date with pagination
+func (r *StudentRepository) FindAll(offset, limit int) ([]models.Student, int, error) {
+	// Get total count first
+	var total int
+	err := r.db.QueryRow("SELECT COUNT(*) FROM students").Scan(&total)
 	if err != nil {
-		return nil, err
+		return nil, 0, fmt.Errorf("failed to get total count: %v", err)
+	}
+
+	// Then get paginated results
+	rows, err := r.db.Query("SELECT * FROM students ORDER BY tanggal_daftar DESC LIMIT $1 OFFSET $2", limit, offset)
+	if err != nil {
+		return nil, 0, fmt.Errorf("failed to fetch students: %v", err)
 	}
 	defer rows.Close()
 
@@ -150,11 +158,14 @@ func (r *StudentRepository) FindAll() ([]models.Student, error) {
 			&student.TanggalDaftar,
 		)
 		if err != nil {
-			return nil, err
+			return nil, 0, fmt.Errorf("error scanning student row: %v", err)
 		}
 		students = append(students, student)
 	}
-	return students, rows.Err()
+	if err = rows.Err(); err != nil {
+		return nil, 0, fmt.Errorf("error iterating student rows: %v", err)
+	}
+	return students, total, nil
 }
 
 // FindByNomorPendaftaran retrieves a student by their registration number

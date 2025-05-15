@@ -41,19 +41,31 @@ Content-Type: application/json
 ### 2. Get All Articles
 **GET** `/`
 
+**Query Parameters:**
+- `page` (optional): Page number (default: 1)
+- `limit` (optional): Number of items per page (default: 10, max: 50)
+
 **Response (200 OK):**
 ```json
-[
-  {
-    "id": 1,
-    "title": "Pendidikan Karakter...",
-    "header": "Pentingnya Pendidikan...",
-    "date": "2023-10-05T08:15:30.123Z",
-    "author": "John Doe",
-    "body": "Isi artikel...",
-    "photo": "https://example.com/photo.jpg"
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Pendidikan Karakter...",
+      "header": "Pentingnya Pendidikan...",
+      "date": "2023-10-05T08:15:30.123Z",
+      "author": "John Doe",
+      "body": "Isi artikel...",
+      "photo": "https://example.com/photo.jpg"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "per_page": 10,
+    "total": 25,
+    "total_pages": 3
   }
-]
+}
 ```
 
 ### 3. Get Single Article
@@ -198,28 +210,40 @@ Content-Type: application/json
 ### 2. Get All Students
 **GET** `/api/students`
 
+**Query Parameters:**
+- `page` (optional): Page number (default: 1)
+- `limit` (optional): Number of items per page (default: 10, max: 50)
+
 **Response (200 OK):**
 ```json
-[
-  {
-    "id_pendaftaran": "123e4567-e89b-12d3-a456-426614174000",
-    "nomor_pendaftaran": "YNH-2025-0001",
-    "nama_lengkap": "Ahmad Budiman",
-    "nik": "1234567890123546",
-    "tempat_lahir": "Jakarta",
-    "tanggal_lahir": "2005-05-15",
-    "jenis_kelamin": "L",
-    "alamat": "Jl. Merdeka No. 123",
-    "provinsi": "DKI Jakarta",
-    "kota_kabupaten": "Jakarta Selatan",
-    "kode_pos": "12345",
-    "no_hp": "081234567890",
-    "email": "ahmad3@example.com",
-    "asal_sekolah": "SMP Negeri 1 Jakarta",
-    "tahun_lulus": 2023,
-    "tanggal_daftar": "2025-05-13T10:30:00Z"
+{
+  "data": [
+    {
+      "id_pendaftaran": "123e4567-e89b-12d3-a456-426614174000",
+      "nomor_pendaftaran": "YNH-2025-0001",
+      "nama_lengkap": "Ahmad Budiman",
+      "nik": "1234567890123546",
+      "tempat_lahir": "Jakarta",
+      "tanggal_lahir": "2005-05-15",
+      "jenis_kelamin": "L",
+      "alamat": "Jl. Merdeka No. 123",
+      "provinsi": "DKI Jakarta",
+      "kota_kabupaten": "Jakarta Selatan",
+      "kode_pos": "12345",
+      "no_hp": "081234567890",
+      "email": "ahmad3@example.com",
+      "asal_sekolah": "SMP Negeri 1 Jakarta",
+      "tahun_lulus": 2023,
+      "tanggal_daftar": "2025-05-13T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "per_page": 10,
+    "total": 25,
+    "total_pages": 3
   }
-]
+}
 ```
 
 ### 3. Get Student by Registration Number
@@ -250,14 +274,179 @@ Content-Type: application/json
 ### 4. Update Student
 **PUT** `/api/students/{nomor}`
 
-**Request Body:** Same as Create New Student
+**Request Body:**
+```json
+{
+  "nama_lengkap": "Ahmad Budiman",
+  "tempat_lahir": "Jakarta",
+  "tanggal_lahir": "2005-05-15",
+  "jenis_kelamin": "L",
+  "alamat": "Jl. Merdeka No. 456",
+  "provinsi": "DKI Jakarta",
+  "kota_kabupaten": "Jakarta Selatan",
+  "kode_pos": "12345",
+  "no_hp": "081234567890",
+  "email": "ahmad.updated@example.com",
+  "asal_sekolah": "SMP Negeri 1 Jakarta",
+  "tahun_lulus": 2023
+}
+```
 
-**Response (200 OK):** Same as Get Student
+**Response (200 OK):**
+```json
+{
+  "id_pendaftaran": "123e4567-e89b-12d3-a456-426614174000",
+  "nomor_pendaftaran": "YNH-2025-0001",
+  "nama_lengkap": "Ahmad Budiman",
+  "nik": "1234567890123546",
+  "tempat_lahir": "Jakarta",
+  "tanggal_lahir": "2005-05-15",
+  "jenis_kelamin": "L",
+  "alamat": "Jl. Merdeka No. 456",
+  "provinsi": "DKI Jakarta",
+  "kota_kabupaten": "Jakarta Selatan",
+  "kode_pos": "12345",
+  "no_hp": "081234567890",
+  "email": "ahmad.updated@example.com",
+  "asal_sekolah": "SMP Negeri 1 Jakarta",
+  "tahun_lulus": 2023,
+  "tanggal_daftar": "2025-05-13T10:30:00Z"
+}
+```
 
 ### 5. Delete Student
 **DELETE** `/api/students/{nomor}`
 
 **Response (204 No Content)**
+
+## Authentication
+
+All API endpoints except authentication endpoints require JWT token in the Authorization header.
+
+### Headers for Protected Routes
+```http
+Authorization: Bearer <your-jwt-token>
+```
+
+### Authentication Endpoints
+
+#### 1. Register New User
+**POST** `/api/auth/register`
+
+**Headers:**
+```http
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "username": "testuser",
+  "password": "password123",
+  "email": "test@example.com"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "username": "testuser",
+  "email": "test@example.com",
+  "role": "user",
+  "created_at": "2025-05-15T10:30:00Z",
+  "last_login_at": null
+}
+```
+
+#### 2. Login
+**POST** `/api/auth/login`
+
+**Headers:**
+```http
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "username": "testuser",
+  "password": "password123"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "username": "testuser",
+    "email": "test@example.com",
+    "role": "user",
+    "created_at": "2025-05-15T10:30:00Z",
+    "last_login_at": "2025-05-15T10:35:00Z"
+  }
+}
+```
+
+### Default Admin Account
+```
+Username: admin
+Password: admin123
+```
+
+### Authentication Error Responses
+
+**Invalid Credentials (401 Unauthorized):**
+```json
+{
+  "error": "username atau password salah"
+}
+```
+
+**Missing Token (401 Unauthorized):**
+```json
+{
+  "error": "Authorization header is required"
+}
+```
+
+**Invalid Token (401 Unauthorized):**
+```json
+{
+  "error": "Invalid token"
+}
+```
+
+**Insufficient Permissions (403 Forbidden):**
+```json
+{
+  "error": "Admin access required"
+}
+```
+
+### Role-Based Access Control
+
+1. Public Endpoints (no authentication required):
+   - POST `/api/auth/register`
+   - POST `/api/auth/login`
+
+2. Authenticated User Access:
+   - GET `/api/articles`
+   - GET `/api/articles/{id}`
+   - GET `/api/students`
+   - GET `/api/students/{nomor}`
+
+3. Admin Only Access:
+   - POST, PUT, DELETE `/api/articles/*`
+   - POST, PUT, DELETE `/api/students/*`
+
+### Environment Variables
+Add these variables to your `.env` file:
+```env
+JWT_SECRET=your-256-bit-secret  # Required for JWT signing
+```
 
 ## Setup and Usage
 
@@ -360,7 +549,9 @@ go test ./services
 
 ### Manual Testing Examples
 
-### Create Student (curl)
+### Student API Examples
+
+#### 1. Create Student
 ```bash
 curl -X POST http://localhost:8080/api/students \
   -H "Content-Type: application/json" \
@@ -379,8 +570,53 @@ curl -X POST http://localhost:8080/api/students \
     "asal_sekolah": "SMP Negeri 1 Jakarta",
     "tahun_lulus": 2023
   }'
+```
 
-### Create Article (curl)
+#### 2. Get All Students (with pagination)
+```bash
+# Get first page with default limit (10 items)
+curl http://localhost:8080/api/students
+
+# Get specific page and limit
+curl http://localhost:8080/api/students?page=2&limit=20
+
+# Maximum items per page is 50
+curl http://localhost:8080/api/students?page=1&limit=50
+```
+
+#### 3. Get Student by Registration Number
+```bash
+curl http://localhost:8080/api/students/YNH-2025-0001
+```
+
+#### 4. Update Student
+```bash
+curl -X PUT http://localhost:8080/api/students/YNH-2025-0001 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nama_lengkap": "Ahmad Budiman",
+    "tempat_lahir": "Jakarta",
+    "tanggal_lahir": "2005-05-15",
+    "jenis_kelamin": "L",
+    "alamat": "Jl. Merdeka No. 456",
+    "provinsi": "DKI Jakarta",
+    "kota_kabupaten": "Jakarta Selatan",
+    "kode_pos": "12345",
+    "no_hp": "081234567890",
+    "email": "ahmad.updated@example.com",
+    "asal_sekolah": "SMP Negeri 1 Jakarta",
+    "tahun_lulus": 2023
+  }'
+```
+
+#### 5. Delete Student
+```bash
+curl -X DELETE http://localhost:8080/api/students/YNH-2025-0001
+```
+
+### Article API Examples
+
+#### 1. Create Article
 ```bash
 curl -X POST http://localhost:8080/api/articles \
   -H "Content-Type: application/json" \
@@ -393,12 +629,24 @@ curl -X POST http://localhost:8080/api/articles \
   }'
 ```
 
-### Get All Articles
+#### 2. Get All Articles (with pagination)
 ```bash
+# Get first page with default limit (10 items)
 curl http://localhost:8080/api/articles
+
+# Get specific page and limit
+curl http://localhost:8080/api/articles?page=2&limit=20
+
+# Maximum items per page is 50
+curl http://localhost:8080/api/articles?page=1&limit=50
 ```
 
-### Update Article
+#### 3. Get Article by ID
+```bash
+curl http://localhost:8080/api/articles/1
+```
+
+#### 4. Update Article
 ```bash
 curl -X PUT http://localhost:8080/api/articles/1 \
   -H "Content-Type: application/json" \
@@ -411,24 +659,99 @@ curl -X PUT http://localhost:8080/api/articles/1 \
   }'
 ```
 
+#### 5. Delete Article
+```bash
+curl -X DELETE http://localhost:8080/api/articles/1
+```
+
+### Authentication Examples
+
+#### 1. Register New User
+```bash
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "password123",
+    "email": "test@example.com"
+  }'
+```
+
+#### 2. Login and Get Token
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "password123"
+  }'
+```
+
+#### 3. Using Protected Endpoints
+```bash
+# Store your token in a variable (Linux/Mac)
+TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "password123"}' \
+  | jq -r '.token')
+
+# Use the token with protected endpoints
+curl http://localhost:8080/api/articles \
+  -H "Authorization: Bearer $TOKEN"
+
+# Admin-only endpoint example
+curl -X POST http://localhost:8080/api/articles \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "New Article",
+    "header": "Article Header",
+    "author": "John Doe",
+    "body": "Article content..."
+  }'
+```
+
+### Example Response Formats
+
+#### Successful Paginated Response
+```json
+{
+  "data": [...],
+  "pagination": {
+    "current_page": 1,
+    "per_page": 10,
+    "total": 25,
+    "total_pages": 3
+  }
+}
+```
+
+#### Error Response
+```json
+{
+  "error": "Invalid request payload",
+  "details": "Field validation failed"
+}
+```
+
 ## Validation Rules
 
 ### Student Validation
 | Field            | Rules                                            |
 |------------------|--------------------------------------------------|
-| nama_lengkap     | Required, string (max 100)                      |
+| nama_lengkap     | Required, string (max 100)                       |
 | nik              | Required, exactly 16 digits                      |
-| tempat_lahir     | Required, string (max 50)                       |
-| tanggal_lahir    | Required, date format (YYYY-MM-DD)              |
-| jenis_kelamin    | Required, enum ("L" or "P")                     |
-| alamat           | Required, string                                |
-| provinsi         | Required, string (max 50)                       |
-| kota_kabupaten   | Required, string (max 50)                       |
-| kode_pos         | Required, string (max 10)                       |
-| no_hp            | Required, string (max 15)                       |
-| email            | Required, valid email format (max 100)          |
-| asal_sekolah     | Required, string (max 100)                      |
-| tahun_lulus      | Required, number (2000-2025)                    |
+| tempat_lahir     | Required, string (max 50)                        |
+| tanggal_lahir    | Required, date format (YYYY-MM-DD)               |
+| jenis_kelamin    | Required, enum ("L" or "P")                      |
+| alamat           | Required, string                                 |
+| provinsi         | Required, string (max 50)                        |
+| kota_kabupaten   | Required, string (max 50)                        |
+| kode_pos         | Required, string (max 10)                        |
+| no_hp            | Required, string (max 15)                        |
+| email            | Required, valid email format (max 100)           |
+| asal_sekolah     | Required, string (max 100)                       |
+| tahun_lulus      | Required, number (2000-2025)                     |
 
 ### Article Validation
 | Field   | Rules                          |
@@ -439,3 +762,11 @@ curl -X PUT http://localhost:8080/api/articles/1 \
 | author  | Required, string (max 255)     |
 | body    | Required, string               |
 | photo   | Optional, valid URL format     |
+
+### User Validation
+| Field            | Rules                                     |
+|------------------|-------------------------------------------|
+| username         | Required, string (max 50), unique         |
+| password         | Required, string (min 8 characters)       |
+| email            | Required, valid email format, unique      |
+| role             | Auto-assigned, enum ("user" or "admin")   |

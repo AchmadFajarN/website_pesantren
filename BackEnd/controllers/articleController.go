@@ -38,15 +38,34 @@ func (c *ArticleController) CreateArticle(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, newArticle)
 }
 
-// GetAllArticles handles retrieving all articles
+// GetAllArticles handles retrieving all articles with pagination
 func (c *ArticleController) GetAllArticles(ctx *gin.Context) {
-	articles, err := c.service.GetAllArticles()
+	// Get pagination parameters from query string
+	page, err := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
+	if err != nil || limit < 1 {
+		limit = 10
+	}
+
+	articles, total, err := c.service.GetAllArticles(page, limit)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch articles"})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, articles)
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": articles,
+		"pagination": gin.H{
+			"current_page": page,
+			"per_page":     limit,
+			"total":        total,
+			"total_pages":  (total + limit - 1) / limit,
+		},
+	})
 }
 
 // GetArticleByID handles retrieving a single article by ID

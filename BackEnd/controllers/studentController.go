@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 	"website_pesantren/models"
 	"website_pesantren/services"
 
@@ -51,15 +52,39 @@ func (c *StudentController) CreateStudent(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, newStudent)
 }
 
-// GetAllStudents handles retrieving all students
+// GetAllStudents handles retrieving all students with pagination
 func (c *StudentController) GetAllStudents(ctx *gin.Context) {
-	students, err := c.service.GetAllStudents()
+	// Get pagination parameters from query string
+	page, err := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
+	if err != nil || limit < 1 {
+		limit = 10
+	}
+
+	// Set maximum limit to prevent excessive data fetching
+	if limit > 50 {
+		limit = 50
+	}
+
+	students, total, err := c.service.GetAllStudents(page, limit)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch students"})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, students)
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": students,
+		"pagination": gin.H{
+			"current_page": page,
+			"per_page":     limit,
+			"total":        total,
+			"total_pages":  (total + limit - 1) / limit,
+		},
+	})
 }
 
 // GetStudentByNomor handles retrieving a single student by registration number
