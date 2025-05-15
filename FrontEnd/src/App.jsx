@@ -8,7 +8,7 @@ import Pendaftaran from './Pages/Pendaftaran'
 
 const App = () => {
   return (
-    <div className='relative'>
+    <div className=''>
       <Header />
       <main>
         <Routes>
