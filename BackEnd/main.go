@@ -19,18 +19,20 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 	defer db.Close()
-
 	// Initialize repositories
 	articleRepo := repositories.NewArticleRepository(db)
 	studentRepo := repositories.NewStudentRepository(db)
+	userRepo := repositories.NewUserRepository(db)
 
 	// Initialize services
 	articleService := services.NewArticleService(articleRepo)
 	studentService := services.NewStudentService(studentRepo)
+	authService := services.NewAuthService(userRepo)
 
 	// Initialize controllers
 	articleController := controllers.NewArticleController(articleService)
 	studentController := controllers.NewStudentController(studentService)
+	authController := controllers.NewAuthController(authService)
 
 	// Create new Gin router
 	router := gin.Default()
@@ -41,14 +43,8 @@ func main() {
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
 	router.Use(cors.New(config))
-
-	// Setup API routes
-	api := router.Group("/api")
-	{
-		// Initialize routes
-		routes.SetupArticleRoutes(api, articleController)
-		routes.SetupStudentRoutes(api, studentController)
-	}
+	// Setup all routes
+	routes.SetupRoutes(router, authController, articleController, studentController)
 
 	// Start server
 	if err := router.Run(":8080"); err != nil {

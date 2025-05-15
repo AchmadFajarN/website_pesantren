@@ -52,13 +52,14 @@ func (s *StudentService) CreateStudent(student *models.Student) (*models.Student
 	return createdStudent, nil
 }
 
-// GetAllStudents retrieves all students
-func (s *StudentService) GetAllStudents() ([]models.Student, error) {
-	students, err := s.repo.FindAll()
+// GetAllStudents retrieves all students with pagination
+func (s *StudentService) GetAllStudents(page, limit int) ([]models.Student, int, error) {
+	offset := (page - 1) * limit
+	students, total, err := s.repo.FindAll(offset, limit)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch students: %v", err)
+		return nil, 0, fmt.Errorf("failed to fetch students: %v", err)
 	}
-	return students, nil
+	return students, total, nil
 }
 
 // GetStudentByNomor retrieves a student by their registration number
