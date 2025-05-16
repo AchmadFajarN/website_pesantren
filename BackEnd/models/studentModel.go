@@ -8,6 +8,7 @@ import (
 
 // Student represents the student model
 type Student struct {
+	UserID           string `json:"user_id" db:"user_id"`
 	IDPendaftaran    string `json:"id_pendaftaran,omitempty" db:"id_pendaftaran"`
 	NomorPendaftaran string `json:"nomor_pendaftaran,omitempty" db:"nomor_pendaftaran"`
 	NamaLengkap      string `json:"nama_lengkap" binding:"required" validate:"required,max=100"`

@@ -23,37 +23,39 @@ func SetupRoutes(
 			auth.POST("/login", authController.Login)
 		}
 
+		// Public article routes
+		articles := api.Group("/articles")
+		{
+			articles.GET("/", articleController.GetAllArticles)
+			articles.GET("/:id", articleController.GetArticleByID)
+		}
+
 		// Protected routes
 		protected := api.Group("")
 		protected.Use(middleware.AuthMiddleware())
 		{
-			// Articles routes
-			articles := protected.Group("/articles")
+			// Protected article routes (admin only)
+			adminArticles := protected.Group("/articles")
+			adminArticles.Use(middleware.AdminOnly())
 			{
-				articles.GET("/", articleController.GetAllArticles)
-				articles.GET("/:id", articleController.GetArticleByID)
-
-				// Admin only routes
-				adminArticles := articles.Group("")
-				adminArticles.Use(middleware.AdminOnly())
-				{
-					adminArticles.POST("/", articleController.CreateArticle)
-					adminArticles.PUT("/:id", articleController.UpdateArticle)
-					adminArticles.DELETE("/:id", articleController.DeleteArticle)
-				}
+				adminArticles.POST("/", articleController.CreateArticle)
+				adminArticles.PUT("/:id", articleController.UpdateArticle)
+				adminArticles.DELETE("/:id", articleController.DeleteArticle)
 			}
 
 			// Students routes
 			students := protected.Group("/students")
 			{
-				students.GET("/", studentController.GetAllStudents)
-				students.GET("/:nomor", studentController.GetStudentByNomor)
+				// User routes (require auth)
+				students.POST("/", studentController.CreateStudent)              // Register new student
+				students.GET("/my-registration", studentController.GetMyStudent) // Get own registration
 
 				// Admin only routes
 				adminStudents := students.Group("")
 				adminStudents.Use(middleware.AdminOnly())
 				{
-					adminStudents.POST("/", studentController.CreateStudent)
+					adminStudents.GET("/", studentController.GetAllStudents) // List all students
+					adminStudents.GET("/:nomor", studentController.GetStudentByNomor)
 					adminStudents.PUT("/:nomor", studentController.UpdateStudent)
 					adminStudents.DELETE("/:nomor", studentController.DeleteStudent)
 				}

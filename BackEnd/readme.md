@@ -431,22 +431,27 @@ Password: admin123
 1. Public Endpoints (no authentication required):
    - POST `/api/auth/register`
    - POST `/api/auth/login`
-
-2. Authenticated User Access:
    - GET `/api/articles`
    - GET `/api/articles/{id}`
-   - GET `/api/students`
-   - GET `/api/students/{nomor}`
+
+2. Authenticated User Access:
+   - POST `/api/students` (one registration per user)
+   - GET `/api/students/my-registration` (view own registration)
 
 3. Admin Only Access:
    - POST, PUT, DELETE `/api/articles/*`
-   - POST, PUT, DELETE `/api/students/*`
+   - GET `/api/students` (view all)
+   - GET `/api/students/{nomor}`
+   - PUT `/api/students/{nomor}`
+   - DELETE `/api/students/{nomor}`
 
 ### Environment Variables
 Add these variables to your `.env` file:
 ```env
 JWT_SECRET=your-256-bit-secret  # Required for JWT signing
 ```
+
+For detailed information about the access control system and user registration limits, please see [Access Control Documentation](docs/access_control.md).
 
 ## Setup and Usage
 
@@ -770,3 +775,31 @@ curl -X POST http://localhost:8080/api/articles \
 | password         | Required, string (min 8 characters)       |
 | email            | Required, valid email format, unique      |
 | role             | Auto-assigned, enum ("user" or "admin")   |
+
+### Student Model Fields
+| Field            | Description                                        |
+|-----------------|--------------------------------------------------|
+| id_pendaftaran  | UUID v4, auto-generated                          |
+| nomor_pendaftaran| Format: YNH-{year}-{sequence}                    |
+| user_id         | UUID of the authenticated user who registered     |
+| nama_lengkap    | Student's full name                              |
+| nik             | National ID number (16 digits)                    |
+| tempat_lahir    | Place of birth                                   |
+| tanggal_lahir   | Date of birth (YYYY-MM-DD)                       |
+| jenis_kelamin   | Gender ("L" or "P")                              |
+| alamat          | Address                                          |
+| provinsi        | Province                                         |
+| kota_kabupaten  | City/Regency                                     |
+| kode_pos        | Postal code                                      |
+| no_hp           | Phone number                                     |
+| email           | Email address                                    |
+| asal_sekolah    | Previous school                                  |
+| tahun_lulus     | Graduation year (2000-2025)                      |
+| tanggal_daftar  | Registration date (auto-set to current timestamp)|
+
+### Notes:
+- `user_id` is automatically set based on the authenticated user making the registration
+- Each user can only have one active registration
+- `user_id` will be included in all student responses when the data exists
+- For admin users, all student data is accessible regardless of `user_id`
+- Regular users can only access their own registration data via `/my-registration` endpoint

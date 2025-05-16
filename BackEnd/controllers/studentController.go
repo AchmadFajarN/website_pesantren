@@ -23,10 +23,17 @@ func NewStudentController(service *services.StudentService) *StudentController {
 
 // CreateStudent handles the creation of a new student
 func (c *StudentController) CreateStudent(ctx *gin.Context) {
+	// Get user ID from context (set by auth middleware)
+	userID, exists := ctx.Get("user_id")
+	if !exists {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user not authenticated"})
+		return
+	}
+
 	var student models.Student
 	if err := ctx.ShouldBindJSON(&student); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Invalid request payload",
+			"error":   "invalid request payload",
 			"details": err.Error(),
 		})
 		return
@@ -34,17 +41,20 @@ func (c *StudentController) CreateStudent(ctx *gin.Context) {
 
 	if err := models.ValidateStudent(&student); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Validation failed",
+			"error":   "validation failed",
 			"details": err.Error(),
 		})
 		return
 	}
 
-	newStudent, err := c.service.CreateStudent(&student)
+	newStudent, err := c.service.CreateStudent(&student, userID.(string))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Failed to create student",
-			"details": err.Error(),
+		status := http.StatusBadRequest
+		if err.Error() == "user already has an existing registration" {
+			status = http.StatusConflict
+		}
+		ctx.JSON(status, gin.H{
+			"error": err.Error(),
 		})
 		return
 	}
@@ -91,18 +101,18 @@ func (c *StudentController) GetAllStudents(ctx *gin.Context) {
 func (c *StudentController) GetStudentByNomor(ctx *gin.Context) {
 	nomor := ctx.Param("nomor")
 	if nomor == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing registration number"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "missing registration number"})
 		return
 	}
 
 	student, err := c.service.GetStudentByNomor(nomor)
 	if err != nil {
 		switch err.Error() {
-		case "Siswa tidak ditemukan":
+		case "siswa tidak ditemukan":
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		default:
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch student"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to fetch student"})
 			return
 		}
 	}
@@ -127,10 +137,10 @@ func (c *StudentController) UpdateStudent(ctx *gin.Context) {
 	updatedStudent, err := c.service.UpdateStudent(nomor, &student)
 	if err != nil {
 		switch err.Error() {
-		case "Siswa tidak ditemukan":
+		case "siswa tidak ditemukan":
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
-		case "Email sudah terdaftar":
+		case "email sudah terdaftar":
 			ctx.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 			return
 		default:
@@ -152,14 +162,36 @@ func (c *StudentController) DeleteStudent(ctx *gin.Context) {
 
 	if err := c.service.DeleteStudent(nomor); err != nil {
 		switch err.Error() {
-		case "Siswa tidak ditemukan":
+		case "siswa tidak ditemukan":
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		default:
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete student"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete student"})
 			return
 		}
 	}
 
 	ctx.Status(http.StatusNoContent)
+}
+
+// GetMyStudent gets the student registration for the current user
+func (c *StudentController) GetMyStudent(ctx *gin.Context) {
+	userID, exists := ctx.Get("user_id")
+	if !exists {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user not authenticated"})
+		return
+	}
+
+	student, err := c.service.GetStudentByUserID(userID.(string))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if student == nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "no registration found for this user"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, student)
 }
