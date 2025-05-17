@@ -19,19 +19,28 @@ func NewStudentService(repo *repositories.StudentRepository) *StudentService {
 }
 
 // CreateStudent creates a new student after validating the input and checking for duplicates
-func (s *StudentService) CreateStudent(student *models.Student) (*models.Student, error) {
+func (s *StudentService) CreateStudent(student *models.Student, userID string) (*models.Student, error) {
 	// Validate student data
 	if err := models.ValidateStudent(student); err != nil {
 		return nil, fmt.Errorf("validation error: %v", err)
 	}
 
+	// Check if user already has a registration
+	existing, err := s.repo.FindByUserID(userID)
+	if err != nil {
+		return nil, fmt.Errorf("error checking existing registration: %v", err)
+	}
+	if existing != nil {
+		return nil, fmt.Errorf("user already has an existing registration")
+	}
+
 	// Check for existing NIK
 	existingNIK, err := s.repo.FindByNIK(student.NIK)
 	if err != nil {
-		return nil, fmt.Errorf("error checking NIK: %v", err)
+		return nil, fmt.Errorf("error checking nik: %v", err)
 	}
 	if existingNIK != nil {
-		return nil, fmt.Errorf("NIK sudah terdaftar")
+		return nil, fmt.Errorf("nik sudah terdaftar")
 	}
 
 	// Check for existing email
@@ -40,8 +49,11 @@ func (s *StudentService) CreateStudent(student *models.Student) (*models.Student
 		return nil, fmt.Errorf("error checking email: %v", err)
 	}
 	if existingEmail != nil {
-		return nil, fmt.Errorf("Email sudah terdaftar")
+		return nil, fmt.Errorf("email sudah terdaftar")
 	}
+
+	// Set the UserID for the student
+	student.UserID = userID
 
 	// Create student in repository
 	createdStudent, err := s.repo.Create(student)
@@ -69,7 +81,7 @@ func (s *StudentService) GetStudentByNomor(nomor string) (*models.Student, error
 		return nil, fmt.Errorf("failed to fetch student: %v", err)
 	}
 	if student == nil {
-		return nil, fmt.Errorf("Siswa tidak ditemukan")
+		return nil, fmt.Errorf("siswa tidak ditemukan")
 	}
 	return student, nil
 }
@@ -87,7 +99,7 @@ func (s *StudentService) UpdateStudent(nomorPendaftaran string, studentData *mod
 		return nil, fmt.Errorf("error fetching existing student: %v", err)
 	}
 	if existingStudent == nil {
-		return nil, fmt.Errorf("Siswa tidak ditemukan")
+		return nil, fmt.Errorf("siswa tidak ditemukan")
 	}
 
 	// Check for email uniqueness if email is being changed
@@ -97,7 +109,7 @@ func (s *StudentService) UpdateStudent(nomorPendaftaran string, studentData *mod
 			return nil, fmt.Errorf("error checking email: %v", err)
 		}
 		if emailExists != nil {
-			return nil, fmt.Errorf("Email sudah terdaftar")
+			return nil, fmt.Errorf("email sudah terdaftar")
 		}
 	}
 
@@ -123,7 +135,7 @@ func (s *StudentService) DeleteStudent(nomor string) error {
 		return fmt.Errorf("failed to fetch student: %v", err)
 	}
 	if student == nil {
-		return fmt.Errorf("Siswa tidak ditemukan")
+		return fmt.Errorf("siswa tidak ditemukan")
 	}
 
 	// Delete student from repository
@@ -132,4 +144,16 @@ func (s *StudentService) DeleteStudent(nomor string) error {
 	}
 
 	return nil
+}
+
+// GetStudentByUserID retrieves a student registration by user ID
+func (s *StudentService) GetStudentByUserID(userID string) (*models.Student, error) {
+	student, err := s.repo.FindByUserID(userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch student: %v", err)
+	}
+	if student == nil {
+		return nil, fmt.Errorf("siswa tidak ditemukan")
+	}
+	return student, nil
 }

@@ -70,16 +70,15 @@ func (r *StudentRepository) Create(student *models.Student) (*models.Student, er
 			id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, tempat_lahir,
 			tanggal_lahir, jenis_kelamin, alamat, provinsi,
 			kota_kabupaten, kode_pos, no_hp, email,
-			asal_sekolah, tahun_lulus, tanggal_daftar
-		) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, CURRENT_TIMESTAMP)
+			asal_sekolah, tahun_lulus, tanggal_daftar, user_id
+		) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, CURRENT_TIMESTAMP, $15)
 		RETURNING id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, tempat_lahir,
 				  tanggal_lahir, jenis_kelamin, alamat, provinsi,
 				  kota_kabupaten, kode_pos, no_hp, email,
-				  asal_sekolah, tahun_lulus, tanggal_daftar`
+				  asal_sekolah, tahun_lulus, tanggal_daftar, user_id`
 	var result models.Student
 	var dbGender string
-	err = r.db.QueryRow(
-		query,
+	err = r.db.QueryRow(query,
 		nomorPendaftaran,
 		student.NamaLengkap,
 		student.NIK,
@@ -94,7 +93,7 @@ func (r *StudentRepository) Create(student *models.Student) (*models.Student, er
 		student.Email,
 		student.AsalSekolah,
 		student.TahunLulus,
-	).Scan(
+		student.UserID).Scan(
 		&result.IDPendaftaran,
 		&result.NomorPendaftaran,
 		&result.NamaLengkap,
@@ -111,6 +110,7 @@ func (r *StudentRepository) Create(student *models.Student) (*models.Student, er
 		&result.AsalSekolah,
 		&result.TahunLulus,
 		&result.TanggalDaftar,
+		&result.UserID,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create student: %v", err)
@@ -130,7 +130,16 @@ func (r *StudentRepository) FindAll(offset, limit int) ([]models.Student, int, e
 	}
 
 	// Then get paginated results
-	rows, err := r.db.Query("SELECT * FROM students ORDER BY tanggal_daftar DESC LIMIT $1 OFFSET $2", limit, offset)
+	query := `
+		SELECT id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, 
+			tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, provinsi, 
+			kota_kabupaten, kode_pos, no_hp, email, asal_sekolah, 
+			tahun_lulus, tanggal_daftar, user_id
+		FROM students 
+		ORDER BY tanggal_daftar DESC 
+		LIMIT $1 OFFSET $2
+	`
+	rows, err := r.db.Query(query, limit, offset)
 	if err != nil {
 		return nil, 0, fmt.Errorf("failed to fetch students: %v", err)
 	}
@@ -139,6 +148,7 @@ func (r *StudentRepository) FindAll(offset, limit int) ([]models.Student, int, e
 	var students []models.Student
 	for rows.Next() {
 		var student models.Student
+		var nullableUserID sql.NullString
 		err := rows.Scan(
 			&student.IDPendaftaran,
 			&student.NomorPendaftaran,
@@ -156,9 +166,13 @@ func (r *StudentRepository) FindAll(offset, limit int) ([]models.Student, int, e
 			&student.AsalSekolah,
 			&student.TahunLulus,
 			&student.TanggalDaftar,
+			&nullableUserID,
 		)
 		if err != nil {
 			return nil, 0, fmt.Errorf("error scanning student row: %v", err)
+		}
+		if nullableUserID.Valid {
+			student.UserID = nullableUserID.String
 		}
 		students = append(students, student)
 	}
@@ -171,7 +185,16 @@ func (r *StudentRepository) FindAll(offset, limit int) ([]models.Student, int, e
 // FindByNomorPendaftaran retrieves a student by their registration number
 func (r *StudentRepository) FindByNomorPendaftaran(nomor string) (*models.Student, error) {
 	var student models.Student
-	err := r.db.QueryRow("SELECT * FROM students WHERE nomor_pendaftaran = $1", nomor).Scan(
+	var nullableUserID sql.NullString
+	query := `
+		SELECT id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, 
+			tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, provinsi, 
+			kota_kabupaten, kode_pos, no_hp, email, asal_sekolah, 
+			tahun_lulus, tanggal_daftar, user_id
+		FROM students 
+		WHERE nomor_pendaftaran = $1
+	`
+	err := r.db.QueryRow(query, nomor).Scan(
 		&student.IDPendaftaran,
 		&student.NomorPendaftaran,
 		&student.NamaLengkap,
@@ -188,12 +211,17 @@ func (r *StudentRepository) FindByNomorPendaftaran(nomor string) (*models.Studen
 		&student.AsalSekolah,
 		&student.TahunLulus,
 		&student.TanggalDaftar,
+		&nullableUserID,
 	)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
 	if err != nil {
 		return nil, err
+	}
+
+	if nullableUserID.Valid {
+		student.UserID = nullableUserID.String
 	}
 	return &student, nil
 }
@@ -201,7 +229,15 @@ func (r *StudentRepository) FindByNomorPendaftaran(nomor string) (*models.Studen
 // FindByNIK retrieves a student by their NIK
 func (r *StudentRepository) FindByNIK(nik string) (*models.Student, error) {
 	var student models.Student
-	err := r.db.QueryRow("SELECT * FROM students WHERE nik = $1", nik).Scan(
+	var nullableUserID sql.NullString
+	query := `
+		SELECT id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, 
+		tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, provinsi, 
+		kota_kabupaten, kode_pos, no_hp, email, asal_sekolah, 
+		tahun_lulus, tanggal_daftar, user_id
+		FROM students WHERE nik = $1
+	`
+	err := r.db.QueryRow(query, nik).Scan(
 		&student.IDPendaftaran,
 		&student.NomorPendaftaran,
 		&student.NamaLengkap,
@@ -218,12 +254,17 @@ func (r *StudentRepository) FindByNIK(nik string) (*models.Student, error) {
 		&student.AsalSekolah,
 		&student.TahunLulus,
 		&student.TanggalDaftar,
+		&nullableUserID,
 	)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
 	if err != nil {
 		return nil, err
+	}
+
+	if nullableUserID.Valid {
+		student.UserID = nullableUserID.String
 	}
 	return &student, nil
 }
@@ -231,7 +272,15 @@ func (r *StudentRepository) FindByNIK(nik string) (*models.Student, error) {
 // FindByEmail retrieves a student by their email
 func (r *StudentRepository) FindByEmail(email string) (*models.Student, error) {
 	var student models.Student
-	err := r.db.QueryRow("SELECT * FROM students WHERE email = $1", email).Scan(
+	var nullableUserID sql.NullString
+	query := `
+		SELECT id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, 
+		tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, provinsi, 
+		kota_kabupaten, kode_pos, no_hp, email, asal_sekolah, 
+		tahun_lulus, tanggal_daftar, user_id
+		FROM students WHERE email = $1
+	`
+	err := r.db.QueryRow(query, email).Scan(
 		&student.IDPendaftaran,
 		&student.NomorPendaftaran,
 		&student.NamaLengkap,
@@ -248,6 +297,7 @@ func (r *StudentRepository) FindByEmail(email string) (*models.Student, error) {
 		&student.AsalSekolah,
 		&student.TahunLulus,
 		&student.TanggalDaftar,
+		&nullableUserID,
 	)
 	if err == sql.ErrNoRows {
 		return nil, nil
@@ -255,7 +305,55 @@ func (r *StudentRepository) FindByEmail(email string) (*models.Student, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if nullableUserID.Valid {
+		student.UserID = nullableUserID.String
+	}
 	return &student, nil
+}
+
+// FindByUserID finds a student by user ID
+func (r *StudentRepository) FindByUserID(userID string) (*models.Student, error) {
+	student := &models.Student{}
+	var nullableUserID sql.NullString
+	query := `
+		SELECT id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, 
+		tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, provinsi, 
+		kota_kabupaten, kode_pos, no_hp, email, asal_sekolah, 
+		tahun_lulus, tanggal_daftar, user_id
+		FROM students WHERE user_id = $1
+	`
+	err := r.db.QueryRow(query, userID).Scan(
+		&student.IDPendaftaran,
+		&student.NomorPendaftaran,
+		&student.NamaLengkap,
+		&student.NIK,
+		&student.TempatLahir,
+		&student.TanggalLahir,
+		&student.JenisKelamin,
+		&student.Alamat,
+		&student.Provinsi,
+		&student.KotaKabupaten,
+		&student.KodePos,
+		&student.NoHP,
+		&student.Email,
+		&student.AsalSekolah,
+		&student.TahunLulus,
+		&student.TanggalDaftar,
+		&nullableUserID,
+	)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to find student: %v", err)
+	}
+
+	if nullableUserID.Valid {
+		student.UserID = nullableUserID.String
+	}
+	return student, nil
 }
 
 // Update modifies an existing student's information
@@ -275,9 +373,12 @@ func (r *StudentRepository) Update(nomor string, student *models.Student) (*mode
 			asal_sekolah = $11,
 			tahun_lulus = $12
 		WHERE nomor_pendaftaran = $13
-		RETURNING *`
-
+		RETURNING id_pendaftaran, nomor_pendaftaran, nama_lengkap, nik, 
+		tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, provinsi, 
+		kota_kabupaten, kode_pos, no_hp, email, asal_sekolah, 
+		tahun_lulus, tanggal_daftar, user_id`
 	var result models.Student
+	var nullableUserID sql.NullString
 	err := r.db.QueryRow(
 		query,
 		student.NamaLengkap,
@@ -292,8 +393,7 @@ func (r *StudentRepository) Update(nomor string, student *models.Student) (*mode
 		student.Email,
 		student.AsalSekolah,
 		student.TahunLulus,
-		nomor,
-	).Scan(
+		nomor).Scan(
 		&result.IDPendaftaran,
 		&result.NomorPendaftaran,
 		&result.NamaLengkap,
@@ -310,6 +410,7 @@ func (r *StudentRepository) Update(nomor string, student *models.Student) (*mode
 		&result.AsalSekolah,
 		&result.TahunLulus,
 		&result.TanggalDaftar,
+		&nullableUserID,
 	)
 
 	if err == sql.ErrNoRows {
@@ -318,6 +419,11 @@ func (r *StudentRepository) Update(nomor string, student *models.Student) (*mode
 	if err != nil {
 		return nil, err
 	}
+
+	if nullableUserID.Valid {
+		result.UserID = nullableUserID.String
+	}
+
 	return &result, nil
 }
 
