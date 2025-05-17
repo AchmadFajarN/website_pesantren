@@ -7,7 +7,7 @@ CREATE TABLE registration_sequence (
   last_sequence INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
   id_pendaftaran UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   nomor_pendaftaran VARCHAR(20) UNIQUE NOT NULL,
   nama_lengkap VARCHAR(100) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE students (
   tanggal_daftar TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE articles (
+CREATE TABLE IF NOT EXISTS articles (
   id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   header VARCHAR(255) NOT NULL,
@@ -58,3 +58,10 @@ VALUES (
     'admin',
     CURRENT_TIMESTAMP
 ) ON CONFLICT (username) DO NOTHING;
+
+-- Add user_id column to students table and set up foreign key constraint
+-- Ensure that the user_id column is unique to prevent multiple registrations by the same user
+ALTER TABLE students ADD COLUMN user_id VARCHAR(36);
+ALTER TABLE students ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+CREATE INDEX idx_students_user_id ON students(user_id);
+ALTER TABLE students ADD CONSTRAINT unique_user_registration UNIQUE (user_id);

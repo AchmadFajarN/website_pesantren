@@ -10,13 +10,14 @@ import (
 )
 
 type User struct {
-	ID          string       `json:"id"`
-	Username    string       `json:"username"`
-	Password    string       `json:"-"` // Password won't be included in JSON
-	Email       string       `json:"email"`
-	Role        string       `json:"role"`
-	CreatedAt   time.Time    `json:"created_at"`
-	LastLoginAt sql.NullTime `json:"last_login_at,omitempty"`
+	ID          string         `json:"id"`
+	Username    string         `json:"username"`
+	Password    string         `json:"-"` // Password won't be included in JSON
+	Email       string         `json:"email"`
+	Role        string         `json:"role"`
+	CreatedAt   time.Time      `json:"created_at"`
+	StudentID   sql.NullString `json:"student_id,omitempty"` // Reference to student registration
+	LastLoginAt sql.NullTime   `json:"last_login_at,omitempty"`
 }
 
 // MarshalJSON implements custom JSON marshaling for User
