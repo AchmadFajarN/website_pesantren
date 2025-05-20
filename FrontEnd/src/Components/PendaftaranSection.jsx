@@ -1,6 +1,7 @@
 import React from 'react'
 import Underline from './Underline'
 import OfflinePendaftaran from './OfflinePendaftaran'
+import OnlinePendaftaran from './OnlinePendaftaran'
 
 const PendaftaranSection = () => {
   return (
@@ -8,6 +9,7 @@ const PendaftaranSection = () => {
         <h1 className='font-bold text-xl text-green-700'>Pendaftaran</h1>
         <Underline />
         <OfflinePendaftaran />
+        <OnlinePendaftaran />
     </section>
   )
 }
