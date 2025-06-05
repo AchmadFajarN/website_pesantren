@@ -1,4 +1,3 @@
-import React from 'react'
 import KurikulumPendaftaran from '../Components/KurikulumPendaftaran'
 import PendaftaranSection from '../Components/PendaftaranSection'
 

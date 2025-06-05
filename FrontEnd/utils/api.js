@@ -1,23 +1,24 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "";
 
 const getAccesToken = () => {
-  return localStorage.getItem("accesToken");
+  return JSON.parse(localStorage.getItem("accessToken"));
 };
-
 const putAccesToken = (token) => {
-  return localStorage.setItem("accesToken", token);
+  return localStorage.setItem("accessToken", token);
 };
 
 // fetch with token
-const fetchWithToken =  async(url, options = {}) => {
+const fetchWithToken = async (url, options = {}) => {
+  const tokenObj = getAccesToken();
+  const token = tokenObj.token
   return fetch(url, {
     ...options,
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${getAccesToken}`
-    }
-  })
-}
+      Authorization: `Bearer ${ token }`,
+    },
+  });
+};
 
 // register
 const register = async ({ username, password, email }) => {
@@ -33,13 +34,15 @@ const register = async ({ username, password, email }) => {
     }),
   });
   const result = await res.json();
-  const { error } = result
-  if (!error) {
-    return { result, error: false }
-  }
-  return {error: true, message: error}
-};
+  const { error } = result;
 
+  if (!error) {
+    return {
+      result 
+    };
+  }
+  return { error: true, message: error };
+};
 
 // login
 const login = async ({ username, password }) => {
@@ -54,13 +57,37 @@ const login = async ({ username, password }) => {
     }),
   });
 
-  const { token } = await res.json();
-  if (token !== undefined) {
-    return { error: false, data: token }
+  const result = await res.json();
+  const { error, token, user } = result;
+
+  if (!error) {
+    return {
+      data: {
+        token,
+        user: user.username
+      }
+    };
   }
 
-  return { error: true }
+  return { error: error };
 };
 
+const registerStudent = async (biodata) => {
+  try {
+    const req = await fetchWithToken(`${BASE_URL}/api/students`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(biodata),
+    });
 
-export {register}
+    const res = await req.json();
+    return res
+  } catch (err) {
+    return { error: err.message }
+  }
+};
+
+export { register, login, putAccesToken, getAccesToken, registerStudent };
+

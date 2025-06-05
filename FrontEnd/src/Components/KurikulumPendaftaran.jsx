@@ -63,8 +63,8 @@ const KurikulumPendaftaran = () => {
                 </div>
                 {kelas.isDisplay && (
                   <ul className="bg-green-800 flex flex-col gap-2 p-2">
-                    {kelas.pelajaran.map((pelajaran) => (
-                      <li className="text-yellow-400">{pelajaran}</li>
+                    {kelas.pelajaran.map((pelajaran, index) => (
+                      <li key={index} className="text-yellow-400">{pelajaran}</li>
                     ))}
                   </ul>
                 )}

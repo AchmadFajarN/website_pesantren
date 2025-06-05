@@ -1,4 +1,3 @@
-import React from 'react'
 import Underline from './Underline'
 import OfflinePendaftaran from './OfflinePendaftaran'
 import OnlinePendaftaran from './OnlinePendaftaran'

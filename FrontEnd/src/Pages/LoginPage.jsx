@@ -1,12 +1,12 @@
-import React from 'react'
-import CardLogin from '../Components/CardLogin'
+import CardLogin from "../Components/CardLogin";
+
 
 const LoginPage = () => {
   return (
-    <section className='w-full h-screen flex justify-center items-center'>
-        <CardLogin />
+    <section className="w-full h-screen flex justify-center items-center">
+      <CardLogin />
     </section>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
