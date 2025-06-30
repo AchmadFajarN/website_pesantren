@@ -2,28 +2,32 @@ import { Link } from "react-router-dom";
 import useInput from "../hooks/CustomHooks";
 import { register } from "../../utils/api";
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CardRegitser = () => {
+  const navigate = useNavigate();
   const [username, onChangeUsername] = useInput();
   const [password, onChangePassword] = useInput();
   const [email, onChangeEmail] = useInput();
   const [confirmationPass, onChangeConfPass] = useInput();
   const [message, setMessage] = useState("");
-  const [succes, setSucces] = useState(false);
 
   const submitHandler = async (ev) => {
     ev.preventDefault();
-
+    console.log({ username, password, email });
     if (password !== confirmationPass) {
-      setMessage("Password Tidak Sama!");
+      setMessage("Password Tidak sesuai");
       return;
     }
-    const { error, message } = await register({ username, password, email });
-    if (error) {
-      setMessage(message);
+
+    const result = await register({ username, password, email });
+    console.log(result);
+
+    if (result.error) {
+      setMessage("Akun sudah terdaftar");
+      return
     }
-    setSucces(true);
+    navigate("/pendaftaran/login");
   };
 
   return (
@@ -77,11 +81,6 @@ const CardRegitser = () => {
           </Link>
         </p>
       </form>
-      {succes && (
-        <span className="mt-4 ml-4 flex items-center gap-1 text-xs text-green-700 font-bold">
-          Akun berhasil dibuat <Check size={16} />
-        </span>
-      )}
     </div>
   );
 };

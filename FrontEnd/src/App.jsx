@@ -11,9 +11,7 @@ import FormDaftar from "./Pages/FormDaftar";
 import PrivateRoute from "./Components/PrivateRoute";
 
 const App = () => {
-  const onLoginSucces = ({username, password}) => {
-    console.log(username, password);
-  }
+  
   return (
     <div>
       <Header />

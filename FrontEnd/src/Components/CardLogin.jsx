@@ -12,20 +12,14 @@ const CardLogin = () => {
 
   const submitLogin = async (ev) => {
     ev.preventDefault();
-    const result = await login({username, password})
-    const { error, data } = result
-    if (error) {
-      setErrorMesage(error);
-    } 
-    
-    if (error === 'Invalid request format'){
-      setErrorMesage('Kolom tidak boleh kosong');
+    const result = await login({ username, password });
+    console.log(result);
+    if (result.error === "username atau password salah") {
+      setErrorMesage(result.error);
     }
-    
-    if (data !== undefined) {
-      putAccesToken(JSON.stringify(data));
-      navigate('/pendaftaran/me')
-    }
+    putAccesToken("accessToken", result.token);
+    localStorage.setItem('userId', result.user.id);
+    navigate('/pendaftaran/me');
   };
   return (
     <div className="p-8 max-w-xl">
