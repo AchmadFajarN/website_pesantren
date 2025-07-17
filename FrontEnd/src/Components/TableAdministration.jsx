@@ -11,12 +11,12 @@ const TableAdministration = ({ datas, className, transitionAnimate, tableTitle }
       className={`${className}`}
     >
       <div className="w-full mt-2 py-2 bg-slate-100 shadow-md text-center">
-        <h3 className="font-bold text-green-700">{tableTitle}</h3>
+        <h3 className="font-bold text-yellow-600">{tableTitle}</h3>
       </div>
       <div className="mt-2 min-h-[14rem] bg-slate-100 px-2 py-4 shadow-md rounded-md">
         {datas.map((data) => {
           return (
-            <div className="flex justify-between font-semibold text-yellow-600">
+            <div key={data.name} className="flex justify-between font-semibold text-green-700">
               <p>{data.name}</p>
               <p>{formatRupiah(data.price)}</p>
             </div>
@@ -24,7 +24,7 @@ const TableAdministration = ({ datas, className, transitionAnimate, tableTitle }
         })}
       </div>
       <div className="w-full mt-2 py-2 bg-slate-100 shadow-md text-center">
-        <h3 className="font-bold text-green-700">
+        <h3 className="font-bold text-yellow-600">
           total: {formatRupiah(reslutPrice)}
         </h3>
       </div>

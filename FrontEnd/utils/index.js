@@ -11,6 +11,25 @@ import kitabKuning from "../src/assets/image/kitab-kuning.jpeg";
 import pramuka from "../src/assets/image/pramuka2.jpg";
 import smpClass from "../src/assets/image/smp2.jpg";
 
+let misi = [
+  {
+    description: 'Melaksanakan pembelajaran secara klasikal terpadu akseleratif dan bimbingan secara efektif',
+    imgUrl: kurikulum,
+  },
+  {
+    description: 'Mendidik santri memiliki kemantapan aqidah dan keunggulan moral',
+    imgUrl: lingkungan,
+  },
+  {
+    description: 'Mendidik santri agar mampu mempraktikan nilai keislaman dalam bermasyarakat, berbangsa, dan bernegara',
+    imgUrl: foto3
+  },
+  {
+    description: 'Mencetak lulusan yang memiliki kompentensi pengetahuan, skill dan bermasyarakat',
+    imgUrl: kelulusan
+  }
+]
+
 let kelasDanKurikulum = [
   {
     kelas: "I'Dad",
@@ -318,5 +337,6 @@ export {
   kelasDanKurikulum,
   administrasiMuqimAndSmp,
   administrasiNonMuqimAndSmp,
-  formatRupiah
+  formatRupiah,
+  misi
 };
