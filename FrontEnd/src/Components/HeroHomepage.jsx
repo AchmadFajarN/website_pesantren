@@ -1,10 +1,15 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { animateFunc } from "../../utils";
 
-const HeroHomepage = () => {
+const HeroHomepage = ({ scrollTarget }) => {
+  const handlerScroll = () => {
+    scrollTarget.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
   return (
     <section className="h-screen relative flex flex-col justify-center items-center">
       <motion.p
@@ -50,9 +55,9 @@ const HeroHomepage = () => {
           Info Pendaftaran?
         </motion.p>
       </Link>
-      <a href="#sectionHomepage" className="absolute bottom-14 text-green-700 animate-bounce" >
+      <button onClick={handlerScroll} className="absolute bottom-14 text-green-700 animate-bounce cursor-pointer" >
         <ArrowDown className="" />
-      </a>
+      </button>
     </section>
   );
 };

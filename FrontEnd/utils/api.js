@@ -27,7 +27,10 @@ const register = async ({ username, password, email }) => {
     });
 
     const result = await response.json();
-    return result;
+    return {
+      status: 'success',
+      data: result
+    };
   } catch (err) {
     return err;
   }

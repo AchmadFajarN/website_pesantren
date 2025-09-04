@@ -38,7 +38,7 @@ const Header = () => {
           navActive ? "scale-[1] opacity-[1]" : ""
         }`}
       >
-        <ul className="flex flex-col items-center gap-4 md:flex-row">
+        <ul className="flex flex-col items-center gap-3 md:flex-row">
           <motion.li
             onClick={hamburgerActiveHandler}
             initial={{ opacity: 0, translateX: 35 }}
@@ -71,12 +71,12 @@ const Header = () => {
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ duration: 0.3, ease: ["easeInOut"] }}
           >
-            <Link
+            {/* <Link
               className="font-bold text-green-700 hover:text-green-900 transition-colors duration-300 ease-in-out"
               to={"/blog"}
             >
               Blog
-            </Link>
+            </Link> */}
           </motion.li>
           <motion.li
             onClick={hamburgerActiveHandler}

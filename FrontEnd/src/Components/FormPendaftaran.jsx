@@ -2,7 +2,7 @@ const FormPendaftaran = ({ handleSubmit, errorMessage, formData, handleChange })
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-slate-100 shadow-md rounded-md p-8 md:w-4xl w-sm flex flex-col gap-4"
+      className="bg-slate-100 shadow-md rounded-md p-8 md:w-xl xl:w-2xl w-xs flex flex-col gap-4"
     >
       <div className="flex flex-col gap-2">
         <label className="text-green-700 font-semibold">Nama Lengkap</label>

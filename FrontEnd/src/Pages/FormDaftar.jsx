@@ -35,17 +35,21 @@ const FormDaftar = () => {
 
   const getStudentBio = async () => {
       const biodata = await getStudentByCredentials();
-      if (!biodata.error) {
-        const { nomor_pendaftaran, nama_lengkap, nik, alamat, provinsi } = biodata;
-        localStorage.setItem("biodata_murid", JSON.stringify({
-          nomor_pendaftaran,
-          nama_lengkap,
-          nik,
-          alamat,
-          provinsi
-        }));
+      if (!biodata.status === 'success') {
+        const { nomor_pendaftaran, nama_lengkap, nik, alamat, provinsi } = biodata.data;
+        
+        if (nomor_pendaftaran, nama_lengkap, nik, alamat, provinsi) {
+          localStorage.setItem("biodata_murid", JSON.stringify({
+            nomor_pendaftaran,
+            nama_lengkap,
+            nik,
+            alamat,
+            provinsi
+          }));
+        }
         const bio = localStorage.getItem("biodata_murid");
         setDisplayRegisterForm(JSON.parse(bio))
+        console.log('sukses daftar')
       }
   }
 
@@ -89,7 +93,7 @@ const FormDaftar = () => {
   // const { nomor_pendaftaran, nama_lengkap, nik, alamat, provinsi } = displayRegisterForm;
 
   return (
-    <section className="w-full min-h-screen pt-40 flex justify-center items-center">
+    <section className="w-full min-h-screen pt-40 flex justify-center items-center"> 
       {displayRegisterForm === null ? (
         <FormPendaftaran handleSubmit={handleSubmit} errorMessage={errorMessage} formData={formData} handleChange={handleChange} />
       ) : (
