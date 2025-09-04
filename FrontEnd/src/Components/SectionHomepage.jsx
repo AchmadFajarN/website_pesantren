@@ -8,9 +8,9 @@ import { keunggulan } from "../../utils";
 import QuoteHomepage from "./QuoteHomepage";
 import Underline from "./Underline";
 
-const SectionHomepage = () => {
+const SectionHomepage = ({ scrollTaget }) => {
   return (
-    <section id="sectionHomepage" className="my-[10rem]">
+    <section ref={ scrollTaget } id="sectionHomepage" className="my-[10rem]">
       <motion.h1
         initial={animateFunc().initial}
         whileInView={animateFunc().animate}
